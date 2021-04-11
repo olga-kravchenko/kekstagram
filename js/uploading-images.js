@@ -1,13 +1,15 @@
 'use strict';
 
-const buttonUploadFile = document.querySelector(`#upload-file`);
-const modalOfUploadedImage = document.querySelector(`.img-upload__overlay`);
 const body = document.querySelector(`body`);
-const buttonClose = document.querySelector(`.img-upload__cancel`);
-const effectLevel = document.querySelector(`.effect-level`);
+const buttonUploadFile = body.querySelector(`#upload-file`);
+const modalOfUploadedImage = body.querySelector(`.img-upload__overlay`);
+
+const buttonClose = modalOfUploadedImage.querySelector(`.img-upload__cancel`);
+const effectLevel = modalOfUploadedImage.querySelector(`.effect-level`);
+const inputHashTag = modalOfUploadedImage.querySelector(`.text__hashtags`);
 
 const onEscKeydown = function (evt) {
-  if (evt.key === `Escape`) {
+  if (evt.key === `Escape` && inputHashTag !== document.activeElement) {
     evt.preventDefault();
     closeModal();
   }
@@ -54,5 +56,3 @@ buttonUploadFile.addEventListener(`change`, (evt) => {
   evt.preventDefault();
   openModal();
 });
-
-
