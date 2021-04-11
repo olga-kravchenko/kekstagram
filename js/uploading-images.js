@@ -2,11 +2,11 @@
 
 const body = document.querySelector(`body`);
 const buttonUploadFile = body.querySelector(`#upload-file`);
-const modalOfUploadedImage = body.querySelector(`.img-upload__overlay`);
+const modal = body.querySelector(`.img-upload__overlay`);
 
-const buttonClose = modalOfUploadedImage.querySelector(`.img-upload__cancel`);
-const effectLevel = modalOfUploadedImage.querySelector(`.effect-level`);
-const inputHashTag = modalOfUploadedImage.querySelector(`.text__hashtags`);
+const buttonClose = modal.querySelector(`.img-upload__cancel`);
+const effectLevel = modal.querySelector(`.effect-level`);
+const inputHashTag = modal.querySelector(`.text__hashtags`);
 
 const onEscKeydown = function (evt) {
   if (evt.key === `Escape` && inputHashTag !== document.activeElement) {
@@ -21,13 +21,13 @@ const onButtonCloseClick = (evt) => {
 };
 
 const showModal = () => {
-  modalOfUploadedImage.classList.remove(`hidden`);
+  modal.classList.remove(`hidden`);
   body.classList.add(`modal-open`);
   effectLevel.classList.add(`hidden`);
 };
 
 const hideModal = () => {
-  modalOfUploadedImage.classList.add(`hidden`);
+  modal.classList.add(`hidden`);
   body.classList.remove(`modal-open`);
   buttonUploadFile.value = ``;
 };

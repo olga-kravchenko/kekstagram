@@ -9,9 +9,10 @@ const MAX_HEAT_EFFECT_VALUE = 3;
 const effectsGroup = document.querySelector(`.effects`);
 const bigImage = document.querySelector(`.img-upload__preview img`);
 
-const effectLevelLine = document.querySelector(`.effect-level__line`);
-const effectPin = effectLevelLine.querySelector(`.effect-level__pin`);
-const effectDepth = effectLevelLine.querySelector(`.effect-level__depth`);
+const effectLevel = document.querySelector(`.effect-level`);
+const effectLevelLine = effectLevel.querySelector(`.effect-level__line`);
+const effectPin = effectLevel.querySelector(`.effect-level__pin`);
+const effectDepth = effectLevel.querySelector(`.effect-level__depth`);
 
 let currentEffect = `none`;
 let currentPercent = 100;
@@ -63,4 +64,3 @@ effectsGroup.addEventListener(`change`, (evt) => {
   getCurrentEffectValue(evt);
   addFilterEffect();
 });
-

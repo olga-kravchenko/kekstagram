@@ -1,17 +1,26 @@
 'use strict';
 
+const smallPhotos = document.querySelectorAll(`.picture__img`);
 const bigPhoto = document.querySelector(`.big-picture`);
 const socialComments = bigPhoto.querySelector(`.social__comments`);
+const cancelButton = bigPhoto.querySelector(`.cancel`);
 
 const comments = photos[0].comments;
 
 const commentCount = document.querySelector(`.social__comment-count`);
 const commentLoader = document.querySelector(`.comments-loader`);
 
-bigPhoto.classList.remove(`hidden`);
-commentCount.classList.add(`hidden`);
-commentLoader.classList.add(`hidden`);
-document.querySelector(`body`).classList.add(`modal-open`);
+const showModalBigPhoto = () => {
+  bigPhoto.classList.remove(`hidden`);
+  commentCount.classList.add(`hidden`);
+  commentLoader.classList.add(`hidden`);
+  document.querySelector(`body`).classList.add(`modal-open`);
+};
+
+const hideModalBigPhoto = () => {
+  bigPhoto.classList.add(`hidden`);
+  document.querySelector(`body`).classList.remove(`modal-open`);
+};
 
 const createNewElement = (tagName, className, text) => {
   const newElement = document.createElement(tagName);
@@ -43,11 +52,27 @@ const addCommentsToParent = (parent) => {
   }
 };
 
-const fillBigPhotoByformation = (photo) => {
+const fillBigPhotoByInformation = (photo) => {
   bigPhoto.querySelector(`.big-picture__img img`).src = photo.url;
   bigPhoto.querySelector(`.likes-count`).textContent = photo.likes;
   bigPhoto.querySelector(`.comments-count`).textContent = photo.comments.length;
   bigPhoto.querySelector(`.social__caption`).textContent = photo.description;
   addCommentsToParent(socialComments);
 };
-fillBigPhotoByformation(photos[0]);
+fillBigPhotoByInformation(photos[0]);
+
+
+const addClickOnSmallPhoto = (smallPhoto, photo) => {
+  smallPhoto.addEventListener(`click`, () => {
+    showModalBigPhoto();
+    fillBigPhotoByInformation(photo);
+  });
+};
+
+for (let i = 0; i < smallPhotos.length; i++) {
+  addClickOnSmallPhoto(smallPhotos[i], photos[i]);
+}
+
+cancelButton.addEventListener(`click`, () => {
+  hideModalBigPhoto();
+});
