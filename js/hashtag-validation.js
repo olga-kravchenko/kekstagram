@@ -8,36 +8,34 @@ const Message = {
 
 const MAX_QUANTITY = 5;
 const EMPTY_STRING = ``;
-const re = /^#[\w\d]{1,19}(\s|$)/;
+const regex = /^#[\w\d]{1,19}(\s|$)/;
 
 const form = document.querySelector(`.img-upload__form`);
-const inputHashtag = form.querySelector(`.text__hashtags`);
+const hashtagInput = form.querySelector(`.text__hashtags`);
 
-let errorMessage;
+let currentErrorMessage;
 
 const resetErrorMessage = () => {
-  inputHashtag.setCustomValidity(Message.NO_ERROR);
-  inputHashtag.reportValidity();
+  hashtagInput.setCustomValidity(Message.NO_ERROR);
+  hashtagInput.reportValidity();
 };
 
 const checkHashtag = () => {
   let isValidity;
-  let hashtags = inputHashtag.value.trim().split(` `);
+  let hashtags = hashtagInput.value.trim().split(` `);
 
-  if (inputHashtag.value.trim() === EMPTY_STRING) {
+  if (hashtagInput.value.trim() === EMPTY_STRING) {
     isValidity = true;
   } else if (hashtags.length > MAX_QUANTITY) {
-    errorMessage = Message.ERROR_IN_QUANTITY;
+    currentErrorMessage = Message.ERROR_IN_QUANTITY;
   } else {
-    for (let i = 0; i < hashtags.length; i++) {
-      let hashtag = hashtags[i];
-      let valid = re.test(hashtag);
-      if (valid) {
+    for (let hashtag of hashtags) {
+      if (regex.test(hashtag)) {
         isValidity = true;
-        errorMessage = Message.NO_ERROR;
+        currentErrorMessage = Message.NO_ERROR;
       } else {
         isValidity = false;
-        errorMessage = Message.ERROR_IN_HASHTAG;
+        currentErrorMessage = Message.ERROR_IN_HASHTAG;
         break;
       }
     }
@@ -51,11 +49,9 @@ form.addEventListener(`submit`, (evt) => {
   if (checkHashtag()) {
     form.submit();
   } else {
-    inputHashtag.setCustomValidity(errorMessage);
+    hashtagInput.setCustomValidity(currentErrorMessage);
+    hashtagInput.reportValidity();
   }
-  inputHashtag.reportValidity();
 });
 
-inputHashtag.addEventListener(`input`, () => {
-  resetErrorMessage();
-});
+hashtagInput.addEventListener(`input`, resetErrorMessage);
