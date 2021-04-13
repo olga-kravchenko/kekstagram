@@ -25,7 +25,9 @@ const FilterEffect = {
   HEAT: `brightness`,
 };
 
+const INITIAL_PERCENT = 100;
 const MAX_PERCENT = 100;
+const ONE_HUNGRED = 100;
 const LINE_LENGTH = 453;
 
 const effectsGroup = document.querySelector(`.effects`);
@@ -36,27 +38,19 @@ const effectPin = effectLevelLine.querySelector(`.effect-level__pin`);
 const effectDepth = effectLevelLine.querySelector(`.effect-level__depth`);
 
 let currentEffect = FilterEffect.ORIGIN;
-let currentPercent = MAX_PERCENT;
+let currentPercent = INITIAL_PERCENT;
 
-const applyCurrentEffect = (evt) => {
+const setEffectLineAndPin = (evt) => {
   currentPercent = Math.floor((evt.offsetX * MAX_PERCENT) / LINE_LENGTH);
   effectPin.style.left = `${currentPercent}%`;
   effectDepth.style.width = `${currentPercent}%`;
 };
 
-const resetCurrentEffect = (evt) => {
-  currentPercent = MAX_PERCENT;
+const resetCurrentPercent = () => {
+  currentPercent = INITIAL_PERCENT;
   effectPin.style.left = `${currentPercent}%`;
   effectDepth.style.width = `${currentPercent}%`;
-  currentEffect = evt.target.value;
-};
 
-const addEffect = (filterEffect, filter) => {
-  bigImage.style.filter = filterEffect;
-  bigImage.className = `${filter}`;
-  if (filter) {
-    bigImage.classList.add(`effects__preview--${filter}`);
-  }
 };
 
 const toggleEffectLine = () => {
@@ -67,7 +61,7 @@ const toggleEffectLine = () => {
   }
 };
 
-const addFilterEffect = () => {
+const addEffect = () => {
   let filterEffect;
   let filter;
   toggleEffectLine();
@@ -75,37 +69,44 @@ const addFilterEffect = () => {
   switch (currentEffect) {
     case Filter.ORIGIN:
       filterEffect = `${FilterEffect.ORIGIN}`;
+      filter = ``;
       break;
     case Filter.CHROME:
-      filterEffect = `${FilterEffect.CHROME}(${(currentPercent * MaxEffect.CHROME) / MAX_PERCENT})`;
+      filterEffect = `${FilterEffect.CHROME}(${(currentPercent * MaxEffect.CHROME) / ONE_HUNGRED})`;
       filter = Filter.CHROME;
       break;
     case Filter.SEPIA:
-      filterEffect = `${FilterEffect.SEPIA}(${(currentPercent * MaxEffect.SEPIA) / MAX_PERCENT})`;
+      filterEffect = `${FilterEffect.SEPIA}(${(currentPercent * MaxEffect.SEPIA) / ONE_HUNGRED})`;
       filter = Filter.SEPIA;
       break;
     case Filter.MARVIN:
-      filterEffect = `${FilterEffect.MARVIN}(${(currentPercent * MaxEffect.MARVIN) / MAX_PERCENT}%)`;
+      filterEffect = `${FilterEffect.MARVIN}(${(currentPercent * MaxEffect.MARVIN) / ONE_HUNGRED}%)`;
       filter = Filter.MARVIN;
       break;
     case Filter.PHOBOS:
-      filterEffect = `${FilterEffect.PHOBOS}(${(currentPercent * MaxEffect.PHOBOS) / MAX_PERCENT}px)`;
+      filterEffect = `${FilterEffect.PHOBOS}(${(currentPercent * MaxEffect.PHOBOS) / ONE_HUNGRED}px)`;
       filter = Filter.PHOBOS;
       break;
     case Filter.HEAT:
-      filterEffect = `${FilterEffect.HEAT}(${(currentPercent * MaxEffect.HEAT) / MAX_PERCENT})`;
+      filterEffect = `${FilterEffect.HEAT}(${(currentPercent * MaxEffect.HEAT) / ONE_HUNGRED})`;
       filter = Filter.HEAT;
       break;
   }
-  addEffect(filterEffect, filter);
+
+  bigImage.style.filter = filterEffect;
+  bigImage.className = `${filter}`;
+  if (filter) {
+    bigImage.classList.add(`effects__preview--${filter}`);
+  }
 };
 
 effectLevelLine.addEventListener(`click`, (evt) => {
-  applyCurrentEffect(evt);
-  addFilterEffect();
+  setEffectLineAndPin(evt);
+  addEffect();
 });
 
 effectsGroup.addEventListener(`change`, (evt) => {
-  resetCurrentEffect(evt);
-  addFilterEffect();
+  resetCurrentPercent();
+  currentEffect = evt.target.value;
+  addEffect();
 });
