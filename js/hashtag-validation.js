@@ -1,41 +1,43 @@
 'use strict';
+
+const Message = {
+  NO_ERROR: ``,
+  ERROR_IN_HASHTAG: `Хэштег начинается с # и длинной не больше 19 символов`,
+  ERROR_IN_QUANTITY: `Хэштегов должно быть не больше 5`,
+};
+
+const MAX_QUANTITY = 5;
+const EMPTY_STRING = ``;
+const re = /^#[\w\d]{1,19}(\s|$)/;
+
 const form = document.querySelector(`.img-upload__form`);
 const inputHashtag = form.querySelector(`.text__hashtags`);
 
-let messageError;
+let errorMessage;
 
-const checkConditionSendingForm = () => {
-  if (checkHashtag()) {
-    form.submit();
-  } else {
-    inputHashtag.setCustomValidity(messageError);
-  }
-  inputHashtag.reportValidity();
-};
-
-const checkCorrectionOfInput = () => {
-  inputHashtag.setCustomValidity(``);
+const resetErrorMessage = () => {
+  inputHashtag.setCustomValidity(Message.NO_ERROR);
   inputHashtag.reportValidity();
 };
 
 const checkHashtag = () => {
   let isValidity;
+  let hashtags = inputHashtag.value.trim().split(` `);
 
-  if (inputHashtag.value.trim() === ``) {
+  if (inputHashtag.value.trim() === EMPTY_STRING) {
     isValidity = true;
-    inputHashtag.setCustomValidity(``);
+  } else if (hashtags.length > MAX_QUANTITY) {
+    errorMessage = Message.ERROR_IN_QUANTITY;
   } else {
-    let hashtags = inputHashtag.value.trim().split(` `);
     for (let i = 0; i < hashtags.length; i++) {
-      const re = /^#[\w\d]{1,19}(\s|$)/;
       let hashtag = hashtags[i];
       let valid = re.test(hashtag);
-      if (valid && hashtags.length <= 5) {
+      if (valid) {
         isValidity = true;
-        messageError = ``;
+        errorMessage = Message.NO_ERROR;
       } else {
         isValidity = false;
-        messageError = `Начинаются с #, слово =19симв., коллич. слов < 6`;
+        errorMessage = Message.ERROR_IN_HASHTAG;
         break;
       }
     }
@@ -45,10 +47,15 @@ const checkHashtag = () => {
 
 form.addEventListener(`submit`, (evt) => {
   evt.preventDefault();
-  checkConditionSendingForm();
+
+  if (checkHashtag()) {
+    form.submit();
+  } else {
+    inputHashtag.setCustomValidity(errorMessage);
+  }
+  inputHashtag.reportValidity();
 });
 
 inputHashtag.addEventListener(`input`, () => {
-  checkCorrectionOfInput();
-  checkHashtag();
+  resetErrorMessage();
 });

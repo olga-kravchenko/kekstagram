@@ -1,45 +1,45 @@
 'use strict';
 
 const body = document.querySelector(`body`);
-const buttonUploadFile = body.querySelector(`#upload-file`);
-const modal = body.querySelector(`.img-upload__overlay`);
+const fileUploadButton = body.querySelector(`#upload-file`);
+const modalOfUploadedImage = body.querySelector(`.img-upload__overlay`);
 
-const buttonClose = modal.querySelector(`.img-upload__cancel`);
-const effectLevel = modal.querySelector(`.effect-level`);
-const inputHashTag = modal.querySelector(`.text__hashtags`);
+const closeButton = modalOfUploadedImage.querySelector(`.img-upload__cancel`);
+const effectLevel = modalOfUploadedImage.querySelector(`.effect-level`);
+const inputHashTag = modalOfUploadedImage.querySelector(`.text__hashtags`);
 
-const onEscKeydown = function (evt) {
+const onEscKeydown = (evt) => {
   if (evt.key === `Escape` && inputHashTag !== document.activeElement) {
     evt.preventDefault();
     closeModal();
   }
 };
 
-const onButtonCloseClick = (evt) => {
+const onCloseButtonClick = (evt) => {
   evt.preventDefault();
   closeModal();
 };
 
 const showModal = () => {
-  modal.classList.remove(`hidden`);
+  modalOfUploadedImage.classList.remove(`hidden`);
   body.classList.add(`modal-open`);
   effectLevel.classList.add(`hidden`);
 };
 
 const hideModal = () => {
-  modal.classList.add(`hidden`);
+  modalOfUploadedImage.classList.add(`hidden`);
   body.classList.remove(`modal-open`);
-  buttonUploadFile.value = ``;
+  fileUploadButton.value = ``;
 };
 
 const addCallBacksToCloseModal = () => {
   document.addEventListener(`keydown`, onEscKeydown);
-  buttonClose.addEventListener(`click`, onButtonCloseClick);
+  closeButton.addEventListener(`click`, onCloseButtonClick);
 };
 
 const removeCallBacksToCloseModal = () => {
   document.removeEventListener(`keydown`, onEscKeydown);
-  buttonClose.removeEventListener(`click`, onButtonCloseClick);
+  closeButton.removeEventListener(`click`, onCloseButtonClick);
 };
 
 const openModal = () => {
@@ -52,7 +52,7 @@ const closeModal = () => {
   removeCallBacksToCloseModal();
 };
 
-buttonUploadFile.addEventListener(`change`, (evt) => {
+fileUploadButton.addEventListener(`change`, (evt) => {
   evt.preventDefault();
   openModal();
 });
