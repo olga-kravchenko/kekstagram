@@ -7,7 +7,6 @@ const Message = {
 };
 
 const MAX_QUANTITY = 5;
-const EMPTY_STRING = ``;
 const regex = /^#[\w\d]{1,19}(\s|$)/;
 
 const form = document.querySelector(`.img-upload__form`);

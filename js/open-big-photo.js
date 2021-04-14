@@ -1,6 +1,5 @@
 'use strict';
 
-const smallPhotos = document.querySelectorAll(`.picture__img`);
 const bigPhoto = document.querySelector(`.big-picture`);
 const socialComments = bigPhoto.querySelector(`.social__comments`);
 const cancelButton = bigPhoto.querySelector(`.cancel`);
@@ -59,32 +58,18 @@ const fillBigPhotoByInformation = (photo) => {
   bigPhoto.querySelector(`.social__caption`).textContent = photo.description;
   addCommentsToParent(socialComments);
 };
-fillBigPhotoByInformation(photos[0]);
 
 
-const addClickOnSmallPhoto = (smallPhoto, photo) => {
-  smallPhoto.addEventListener(`click`, () => {
+pictures.addEventListener(`click`, (evt) => {
+  const picture = evt.target.closest(`.picture`);
+  if (picture) {
+    const id = picture.dataset.id;
+    console.log(picture);
     showModalBigPhoto();
-    fillBigPhotoByInformation(photo);
-  });
-};
-
-const addKeydownOnSmallPhoto = (smallPhoto, photo) => {
-  smallPhoto.addEventListener(`keydown`, (evt) => {
-    if (evt.key === `Enter`) {
-      showModalBigPhoto();
-      fillBigPhotoByInformation(photo);
-    }
-  });
-};
-
-for (let i = 0; i < smallPhotos.length; i++) {
-  addClickOnSmallPhoto(smallPhotos[i], photos[i]);
-  addKeydownOnSmallPhoto(smallPhotos[i], photos[i]);
-}
-
+    fillBigPhotoByInformation(photos[id]);
+  }
+});
 cancelButton.addEventListener(`click`, hideModalBigPhoto);
-
 
 const onEscKey = (evt) => {
   if (evt.key === `Escape`) {
