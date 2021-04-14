@@ -69,10 +69,28 @@ const addClickOnSmallPhoto = (smallPhoto, photo) => {
   });
 };
 
+const addKeydownOnSmallPhoto = (smallPhoto, photo) => {
+  smallPhoto.addEventListener(`keydown`, (evt) => {
+    if (evt.key === `Enter`) {
+      showModalBigPhoto();
+      fillBigPhotoByInformation(photo);
+    }
+  });
+};
+
 for (let i = 0; i < smallPhotos.length; i++) {
   addClickOnSmallPhoto(smallPhotos[i], photos[i]);
+  addKeydownOnSmallPhoto(smallPhotos[i], photos[i]);
 }
 
-cancelButton.addEventListener(`click`, () => {
-  hideModalBigPhoto();
-});
+cancelButton.addEventListener(`click`, hideModalBigPhoto);
+
+
+const onEscKey = (evt) => {
+  if (evt.key === `Escape`) {
+    evt.preventDefault();
+    hideModalBigPhoto();
+  }
+};
+
+document.addEventListener(`keydown`, onEscKey);

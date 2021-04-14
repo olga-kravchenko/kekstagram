@@ -6,10 +6,11 @@ const uploadModal = body.querySelector(`.img-upload__overlay`);
 
 const closeButton = uploadModal.querySelector(`.img-upload__cancel`);
 const effectLevel = uploadModal.querySelector(`.effect-level`);
-const inputHashTag = uploadModal.querySelector(`.text__hashtags`);
+const hashTagInput = uploadModal.querySelector(`.text__hashtags`);
+const commenInput = uploadModal.querySelector(`.text__description`);
 
 const onEscKeydown = (evt) => {
-  if (evt.key === `Escape` && inputHashTag !== document.activeElement) {
+  if (evt.key === `Escape` && hashTagInput !== document.activeElement && commenInput !== document.activeElement) {
     evt.preventDefault();
     closeModal();
   }

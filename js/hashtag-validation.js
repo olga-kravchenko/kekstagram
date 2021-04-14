@@ -29,7 +29,7 @@ const checkHashtag = () => {
   } else if (hashtags.length > MAX_QUANTITY) {
     currentErrorMessage = Message.ERROR_IN_QUANTITY;
   } else {
-    for (let hashtag of hashtags) {
+    for (const hashtag of hashtags) {
       if (regex.test(hashtag)) {
         isValidity = true;
         currentErrorMessage = Message.NO_ERROR;

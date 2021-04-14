@@ -1,4 +1,5 @@
 'use strict';
+
 const MaxEffect = {
   CHROME: 1,
   SEPIA: 1,
@@ -27,8 +28,9 @@ const FilterEffect = {
 
 const INITIAL_PERCENT = 100;
 const MAX_PERCENT = 100;
-const ONE_HUNGRED = 100;
+const ONE_HUNDRED = 100;
 const LINE_LENGTH = 453;
+const EMPTY_STRING = ``;
 
 const effectsGroup = document.querySelector(`.effects`);
 const bigImage = document.querySelector(`.img-upload__preview img`);
@@ -61,6 +63,10 @@ const toggleEffectLine = () => {
   }
 };
 
+const getEffectValue = (maxValue) => {
+  return (currentPercent * maxValue) / ONE_HUNDRED;
+};
+
 const addEffect = () => {
   let filterEffect;
   let filter;
@@ -69,32 +75,31 @@ const addEffect = () => {
   switch (currentEffect) {
     case Filter.ORIGIN:
       filterEffect = `${FilterEffect.ORIGIN}`;
-      filter = ``;
       break;
     case Filter.CHROME:
-      filterEffect = `${FilterEffect.CHROME}(${(currentPercent * MaxEffect.CHROME) / ONE_HUNGRED})`;
+      filterEffect = `${FilterEffect.CHROME}(${getEffectValue(MaxEffect.CHROME)})`;
       filter = Filter.CHROME;
       break;
     case Filter.SEPIA:
-      filterEffect = `${FilterEffect.SEPIA}(${(currentPercent * MaxEffect.SEPIA) / ONE_HUNGRED})`;
+      filterEffect = `${FilterEffect.SEPIA}(${getEffectValue(MaxEffect.SEPIA)})`;
       filter = Filter.SEPIA;
       break;
     case Filter.MARVIN:
-      filterEffect = `${FilterEffect.MARVIN}(${(currentPercent * MaxEffect.MARVIN) / ONE_HUNGRED}%)`;
+      filterEffect = `${FilterEffect.MARVIN}(${getEffectValue(MaxEffect.MARVIN)}%)`;
       filter = Filter.MARVIN;
       break;
     case Filter.PHOBOS:
-      filterEffect = `${FilterEffect.PHOBOS}(${(currentPercent * MaxEffect.PHOBOS) / ONE_HUNGRED}px)`;
+      filterEffect = `${FilterEffect.PHOBOS}(${getEffectValue(MaxEffect.PHOBOS)}px)`;
       filter = Filter.PHOBOS;
       break;
     case Filter.HEAT:
-      filterEffect = `${FilterEffect.HEAT}(${(currentPercent * MaxEffect.HEAT) / ONE_HUNGRED})`;
+      filterEffect = `${FilterEffect.HEAT}(${getEffectValue(MaxEffect.HEAT)})`;
       filter = Filter.HEAT;
       break;
   }
 
   bigImage.style.filter = filterEffect;
-  bigImage.className = `${filter}`;
+  bigImage.className = EMPTY_STRING;
   if (filter) {
     bigImage.classList.add(`effects__preview--${filter}`);
   }
