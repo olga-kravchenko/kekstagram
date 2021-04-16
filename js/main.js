@@ -75,6 +75,7 @@ const fillDomElementByPhoto = (photos) => {
     fragment.appendChild(newPhoto);
   }
   pictures.appendChild(fragment);
+
 };
 
 const photos = getPhotos(REQUIRED_PHOTO_QUANTITY);

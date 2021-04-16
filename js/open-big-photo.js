@@ -2,9 +2,9 @@
 
 const bigPhoto = document.querySelector(`.big-picture`);
 const socialComments = bigPhoto.querySelector(`.social__comments`);
-const cancelButton = bigPhoto.querySelector(`.cancel`);
+const cancelButton = bigPhoto.querySelector(`#picture-cancel`);
 
-const comments = photos[0].comments;
+const comments = photos[1].comments;
 
 const commentCount = document.querySelector(`.social__comment-count`);
 const commentLoader = document.querySelector(`.comments-loader`);
@@ -18,7 +18,7 @@ const showModalBigPhoto = () => {
 
 const hideModalBigPhoto = () => {
   bigPhoto.classList.add(`hidden`);
-  document.querySelector(`body`).classList.remove(`modal-open`);
+  body.classList.remove(`modal-open`);
 };
 
 const createNewElement = (tagName, className, text) => {
@@ -64,7 +64,6 @@ pictures.addEventListener(`click`, (evt) => {
   const picture = evt.target.closest(`.picture`);
   if (picture) {
     const id = picture.dataset.id;
-    console.log(picture);
     showModalBigPhoto();
     fillBigPhotoByInformation(photos[id]);
   }
@@ -72,7 +71,9 @@ pictures.addEventListener(`click`, (evt) => {
 cancelButton.addEventListener(`click`, hideModalBigPhoto);
 
 const onEscKey = (evt) => {
-  if (evt.key === `Escape`) {
+  const isEscape = evt.key === `Escape`;
+  const isBigPhotoHidden = !bigPhoto.classList.contains(`hidden`);
+  if (isEscape && isBigPhotoHidden) {
     evt.preventDefault();
     hideModalBigPhoto();
   }

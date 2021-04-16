@@ -4,13 +4,17 @@ const body = document.querySelector(`body`);
 const fileUploadButton = body.querySelector(`#upload-file`);
 const uploadModal = body.querySelector(`.img-upload__overlay`);
 
-const closeButton = uploadModal.querySelector(`.img-upload__cancel`);
+const closeButton = uploadModal.querySelector(`#upload-cancel`);
 const effectLevel = uploadModal.querySelector(`.effect-level`);
 const hashTagInput = uploadModal.querySelector(`.text__hashtags`);
-const commenInput = uploadModal.querySelector(`.text__description`);
+const commentInput = uploadModal.querySelector(`.text__description`);
 
 const onEscKeydown = (evt) => {
-  if (evt.key === `Escape` && hashTagInput !== document.activeElement && commenInput !== document.activeElement) {
+  const isEscape = evt.key === `Escape`;
+  const isHashtagOutOfFocus = hashTagInput !== document.activeElement;
+  const isCommentOutOfFocus = commentInput !== document.activeElement;
+
+  if (isEscape && isHashtagOutOfFocus && isCommentOutOfFocus) {
     evt.preventDefault();
     closeModal();
   }
