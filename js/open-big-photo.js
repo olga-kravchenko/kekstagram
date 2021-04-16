@@ -2,16 +2,22 @@
 
 const bigPhoto = document.querySelector(`.big-picture`);
 const socialComments = bigPhoto.querySelector(`.social__comments`);
-
-const comments = photos[0].comments;
+const cancelButton = bigPhoto.querySelector(`#picture-cancel`);
 
 const commentCount = document.querySelector(`.social__comment-count`);
 const commentLoader = document.querySelector(`.comments-loader`);
 
-bigPhoto.classList.remove(`hidden`);
-commentCount.classList.add(`hidden`);
-commentLoader.classList.add(`hidden`);
-document.querySelector(`body`).classList.add(`modal-open`);
+const showModalBigPhoto = () => {
+  bigPhoto.classList.remove(`hidden`);
+  commentCount.classList.add(`hidden`);
+  commentLoader.classList.add(`hidden`);
+  document.querySelector(`body`).classList.add(`modal-open`);
+};
+
+const hideModalBigPhoto = () => {
+  bigPhoto.classList.add(`hidden`);
+  body.classList.remove(`modal-open`);
+};
 
 const createNewElement = (tagName, className, text) => {
   const newElement = document.createElement(tagName);
@@ -26,9 +32,8 @@ const cleanContent = (cleaningPlace) => {
   cleaningPlace.innerHTML = ``;
 };
 
-const addCommentsToParent = (parent) => {
+const addCommentsToParent = (parent, comments) => {
   cleanContent(socialComments);
-
   for (let i = 0; i < comments.length; i++) {
     const newComment = createNewElement(`li`, `social__comment`);
     parent.appendChild(newComment);
@@ -43,11 +48,31 @@ const addCommentsToParent = (parent) => {
   }
 };
 
-const fillBigPhotoByformation = (photo) => {
+const fillBigPhotoByInformation = (photo) => {
   bigPhoto.querySelector(`.big-picture__img img`).src = photo.url;
   bigPhoto.querySelector(`.likes-count`).textContent = photo.likes;
   bigPhoto.querySelector(`.comments-count`).textContent = photo.comments.length;
   bigPhoto.querySelector(`.social__caption`).textContent = photo.description;
-  addCommentsToParent(socialComments);
+  addCommentsToParent(socialComments, photo.comments);
 };
-fillBigPhotoByformation(photos[0]);
+
+pictures.addEventListener(`click`, (evt) => {
+  const picture = evt.target.closest(`.picture`);
+  if (picture) {
+    const id = picture.dataset.id;
+    showModalBigPhoto();
+    fillBigPhotoByInformation(photos[id]);
+  }
+});
+cancelButton.addEventListener(`click`, hideModalBigPhoto);
+
+const onEscKey = (evt) => {
+  const isEscape = evt.key === `Escape`;
+  const isBigPhotoHidden = !bigPhoto.classList.contains(`hidden`);
+  if (isEscape && isBigPhotoHidden) {
+    evt.preventDefault();
+    hideModalBigPhoto();
+  }
+};
+
+document.addEventListener(`keydown`, onEscKey);

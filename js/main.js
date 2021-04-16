@@ -49,6 +49,7 @@ const getPhotos = (quantity) => {
   const photos = [];
   for (let i = 0; i < quantity; i++) {
     photos.push({
+      id: i,
       url: `photos/${i + 1}.jpg`,
       description: PHOTO_DESCRIPTIONS[getRandomNumber(MIN_ARRAY_INDEX, PHOTO_DESCRIPTIONS.length)],
       likes: getRandomNumber(MIN_LIKE_QUANTITY, MAX_LIKE_QUANTITY),
@@ -60,6 +61,7 @@ const getPhotos = (quantity) => {
 
 const getPhotoDomElement = (photo) => {
   const newPhoto = pictureTemplate.cloneNode(true);
+  newPhoto.querySelector(`.picture`).dataset.id = photo.id;
   newPhoto.querySelector(`.picture__img`).src = photo.url;
   newPhoto.querySelector(`.picture__likes`).textContent = photo.likes;
   newPhoto.querySelector(`.picture__comments`).textContent = photo.comments.length;
@@ -73,6 +75,7 @@ const fillDomElementByPhoto = (photos) => {
     fragment.appendChild(newPhoto);
   }
   pictures.appendChild(fragment);
+
 };
 
 const photos = getPhotos(REQUIRED_PHOTO_QUANTITY);
