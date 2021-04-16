@@ -4,8 +4,6 @@ const bigPhoto = document.querySelector(`.big-picture`);
 const socialComments = bigPhoto.querySelector(`.social__comments`);
 const cancelButton = bigPhoto.querySelector(`#picture-cancel`);
 
-const comments = photos[1].comments;
-
 const commentCount = document.querySelector(`.social__comment-count`);
 const commentLoader = document.querySelector(`.comments-loader`);
 
@@ -34,9 +32,8 @@ const cleanContent = (cleaningPlace) => {
   cleaningPlace.innerHTML = ``;
 };
 
-const addCommentsToParent = (parent) => {
+const addCommentsToParent = (parent, comments) => {
   cleanContent(socialComments);
-
   for (let i = 0; i < comments.length; i++) {
     const newComment = createNewElement(`li`, `social__comment`);
     parent.appendChild(newComment);
@@ -56,9 +53,8 @@ const fillBigPhotoByInformation = (photo) => {
   bigPhoto.querySelector(`.likes-count`).textContent = photo.likes;
   bigPhoto.querySelector(`.comments-count`).textContent = photo.comments.length;
   bigPhoto.querySelector(`.social__caption`).textContent = photo.description;
-  addCommentsToParent(socialComments);
+  addCommentsToParent(socialComments, photo.comments);
 };
-
 
 pictures.addEventListener(`click`, (evt) => {
   const picture = evt.target.closest(`.picture`);
