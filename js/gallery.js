@@ -1,6 +1,5 @@
 'use strict';
 
-
 (() => {
   const body = document.querySelector(`body`);
   const preview = document.querySelector(`.big-picture`);

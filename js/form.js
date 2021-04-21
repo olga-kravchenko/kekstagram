@@ -2,12 +2,12 @@
 
 (() => {
   const body = document.querySelector(`body`);
-  const fileUploadButton = body.querySelector(`#upload-file`);
-  const uploadModal = body.querySelector(`.img-upload__overlay`);
-  const closeButton = uploadModal.querySelector(`#upload-cancel`);
-  const effectLevel = uploadModal.querySelector(`.effect-level`);
-  const hashTagInput = uploadModal.querySelector(`.text__hashtags`);
-  const commentInput = uploadModal.querySelector(`.text__description`);
+  const uploadButton = body.querySelector(`#upload-file`);
+  const modal = body.querySelector(`.img-upload__overlay`);
+  const closeButton = modal.querySelector(`#upload-cancel`);
+  const effectLevel = modal.querySelector(`.effect-level`);
+  const hashTagInput = modal.querySelector(`.text__hashtags`);
+  const commentInput = modal.querySelector(`.text__description`);
 
   const onEscKeydown = (evt) => {
     const isEscape = evt.key === `Escape`;
@@ -24,16 +24,16 @@
     closeModal();
   };
 
-  const showUploadModal = () => {
-    uploadModal.classList.remove(`hidden`);
+  const showModal = () => {
+    modal.classList.remove(`hidden`);
     body.classList.add(`modal-open`);
     effectLevel.classList.add(`hidden`);
   };
 
-  const hideUploadModal = () => {
-    uploadModal.classList.add(`hidden`);
+  const hideModal = () => {
+    modal.classList.add(`hidden`);
     body.classList.remove(`modal-open`);
-    fileUploadButton.value = ``;
+    uploadButton.value = ``;
   };
 
   const addCallBacksToCloseModal = () => {
@@ -47,23 +47,32 @@
   };
 
   const openModal = () => {
-    showUploadModal();
+    showModal();
     addCallBacksToCloseModal();
   };
 
   const closeModal = () => {
-    hideUploadModal();
+    hideModal();
     removeCallBacksToCloseModal();
   };
 
-  fileUploadButton.addEventListener(`change`, (evt) => {
-    evt.preventDefault();
-    openModal();
-  });
+  const uploadPhoto = () => {
+    uploadButton.addEventListener(`change`, (evt) => {
+      evt.preventDefault();
+      openModal();
+    });
+  };
 
-  window.popupUpload = {
-    fileUploadButton,
-    body,
+  const activate = () => {
+    uploadPhoto();
+    window.filters.addListeners();
+    window.zoom.addListeners();
+    window.hashtag.addListeners();
+  };
+
+  window.form = {
+    activate,
+    uploadButton,
     effectLevel,
   };
 })();

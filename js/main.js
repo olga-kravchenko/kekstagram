@@ -5,5 +5,5 @@
 
   const photos = window.data.getPhotos(REQUIRED_PHOTO_QUANTITY);
   window.gallery.activate(photos);
-
+  window.form.activate();
 })();

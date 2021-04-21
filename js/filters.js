@@ -1,6 +1,9 @@
 'use strict';
 
 (() => {
+  const INITIAL_PERCENT = 100;
+  const MAX_PERCENT = 100;
+  const LINE_LENGTH = 453;
   const MaxEffect = {
     CHROME: 1,
     SEPIA: 1,
@@ -8,7 +11,6 @@
     PHOBOS: 3,
     HEAT: 3,
   };
-
   const Filter = {
     ORIGIN: `none`,
     CHROME: `chrome`,
@@ -17,7 +19,6 @@
     PHOBOS: `phobos`,
     HEAT: `heat`,
   };
-
   const FilterEffect = {
     ORIGIN: `none`,
     CHROME: `grayscale`,
@@ -26,46 +27,42 @@
     PHOBOS: `blur`,
     HEAT: `brightness`,
   };
-
   const effectsGroup = document.querySelector(`.effects`);
-  const bigImage = document.querySelector(`.img-upload__preview img`);
+  const uploadedPhoto = document.querySelector(`.img-upload__preview img`);
   const effectLevelLine = document.querySelector(`.effect-level__line`);
   const effectPin = effectLevelLine.querySelector(`.effect-level__pin`);
   const effectDepth = effectLevelLine.querySelector(`.effect-level__depth`);
-
   let currentEffect = FilterEffect.ORIGIN;
-  let currentPercent = window.date.INITIAL_PERCENT;
+  let currentPercent = INITIAL_PERCENT;
 
   const setEffectLineAndPin = (evt) => {
-    currentPercent = Math.floor((evt.offsetX * window.date.MAX_PERCENT) / window.date.LINE_LENGTH);
+    currentPercent = Math.floor((evt.offsetX * MAX_PERCENT) / LINE_LENGTH);
     effectPin.style.left = `${currentPercent}%`;
     effectDepth.style.width = `${currentPercent}%`;
   };
 
   const resetCurrentPercent = () => {
-    currentPercent = window.date.INITIAL_PERCENT;
+    currentPercent = INITIAL_PERCENT;
     effectPin.style.left = `${currentPercent}%`;
     effectDepth.style.width = `${currentPercent}%`;
-
   };
 
   const toggleEffectLine = () => {
     if (currentEffect === `none`) {
-      window.popupUpload.effectLevel.classList.add(`hidden`);
+      window.form.effectLevel.classList.add(`hidden`);
     } else {
-      window.popupUpload.effectLevel.classList.remove(`hidden`);
+      window.form.effectLevel.classList.remove(`hidden`);
     }
   };
 
   const getEffectValue = (maxValue) => {
-    return (currentPercent * maxValue) / window.date.ONE_HUNDRED;
+    return (currentPercent * maxValue) / window.data.ONE_HUNDRED;
   };
 
   const addEffect = () => {
     let filterEffect;
     let filter;
     toggleEffectLine();
-
     switch (currentEffect) {
       case Filter.ORIGIN:
         filterEffect = `${FilterEffect.ORIGIN}`;
@@ -91,32 +88,33 @@
         filter = Filter.HEAT;
         break;
     }
-
-    bigImage.style.filter = filterEffect;
-    bigImage.className = window.date.EMPTY_STRING;
+    uploadedPhoto.style.filter = filterEffect;
+    uploadedPhoto.className = window.data.EMPTY_STRING;
     if (filter) {
-      bigImage.classList.add(`effects__preview--${filter}`);
+      uploadedPhoto.classList.add(`effects__preview--${filter}`);
     }
   };
 
-  effectLevelLine.addEventListener(`click`, (evt) => {
-    setEffectLineAndPin(evt);
-    addEffect();
-  });
+  const addListeners = () => {
+    effectLevelLine.addEventListener(`click`, (evt) => {
+      setEffectLineAndPin(evt);
+      addEffect();
+    });
 
-  effectsGroup.addEventListener(`change`, (evt) => {
-    resetCurrentPercent();
-    currentEffect = evt.target.value;
-    addEffect();
-  });
+    effectsGroup.addEventListener(`change`, (evt) => {
+      resetCurrentPercent();
+      currentEffect = evt.target.value;
+      addEffect();
+    });
 
-  window.popupUpload.fileUploadButton.addEventListener(`change`, () => {
-    resetCurrentPercent();
-    currentEffect = FilterEffect.ORIGIN;
-    addEffect();
-  });
+    window.form.uploadButton.addEventListener(`change`, () => {
+      resetCurrentPercent();
+      currentEffect = FilterEffect.ORIGIN;
+      addEffect();
+    });
+  };
 
-  window.effects = {
-    bigImage,
+  window.filters = {
+    addListeners,
   };
 })();

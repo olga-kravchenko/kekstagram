@@ -22,10 +22,10 @@
   const MIN_COMMENT_QUANTITY = 1;
   const MAX_COMMENT_QUANTITY = 10;
 
-  const INITIAL_PERCENT = 100;
-  const MAX_PERCENT = 100;
+
+
   const ONE_HUNDRED = 100;
-  const LINE_LENGTH = 453;
+
   const EMPTY_STRING = ``;
 
   const getRandomComments = (quantity) => {
@@ -53,12 +53,10 @@
     }
     return photos;
   };
+
   window.data = {
     EMPTY_STRING,
-    INITIAL_PERCENT,
-    MAX_PERCENT,
     ONE_HUNDRED,
-    LINE_LENGTH,
     getPhotos,
   };
 

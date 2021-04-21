@@ -8,6 +8,7 @@
     INITIAL: 100,
   };
 
+  const uploadedPhoto = document.querySelector(`.img-upload__preview img`);
   const zoomOutButton = document.querySelector(`.scale__control--smaller`);
   const zoomInButton = document.querySelector(`.scale__control--bigger`);
   const zoomPercent = document.querySelector(`.scale__control--value`);
@@ -15,25 +16,31 @@
 
   const applyCurrentZoom = () => {
     zoomPercent.value = `${currentZoom}%`;
-    window.effects.bigImage.style.transform = `scale(${currentZoom / window.date.ONE_HUNDRED})`;
+    uploadedPhoto.style.transform = `scale(${currentZoom / window.data.ONE_HUNDRED})`;
   };
 
-  zoomInButton.addEventListener(`click`, () => {
-    if (currentZoom < Zoom.MAX) {
-      currentZoom += Zoom.STEP;
-      applyCurrentZoom();
-    }
-  });
+  const addListeners = () => {
+    zoomInButton.addEventListener(`click`, () => {
+      if (currentZoom < Zoom.MAX) {
+        currentZoom += Zoom.STEP;
+        applyCurrentZoom();
+      }
+    });
 
-  zoomOutButton.addEventListener(`click`, () => {
-    if (currentZoom > Zoom.MIN) {
-      currentZoom -= Zoom.STEP;
-      applyCurrentZoom();
-    }
-  });
+    zoomOutButton.addEventListener(`click`, () => {
+      if (currentZoom > Zoom.MIN) {
+        currentZoom -= Zoom.STEP;
+        applyCurrentZoom();
+      }
+    });
 
-  window.popupUpload.fileUploadButton.addEventListener(`change`, () => {
-    currentZoom = Zoom.MAX;
-    applyCurrentZoom();
-  });
+    window.form.uploadButton.addEventListener(`change`, () => {
+      currentZoom = Zoom.MAX;
+      applyCurrentZoom();
+    });
+  };
+
+  window.zoom = {
+    addListeners,
+  };
 })();

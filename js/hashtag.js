@@ -21,7 +21,7 @@
   const checkHashtag = () => {
     let isValidity;
     let hashtags = hashtagInput.value.trim().split(` `);
-    if (hashtagInput.value.trim() === window.date.EMPTY_STRING) {
+    if (hashtagInput.value.trim() === window.data.EMPTY_STRING) {
       isValidity = true;
     } else if (hashtags.length > MAX_QUANTITY) {
       currentErrorMessage = Message.ERROR_IN_QUANTITY;
@@ -39,16 +39,21 @@
     }
     return isValidity;
   };
+  const addListeners = () => {
+    form.addEventListener(`submit`, (evt) => {
+      evt.preventDefault();
+      if (checkHashtag()) {
+        form.submit();
+      } else {
+        hashtagInput.setCustomValidity(currentErrorMessage);
+        hashtagInput.reportValidity();
+      }
+    });
 
-  form.addEventListener(`submit`, (evt) => {
-    evt.preventDefault();
-    if (checkHashtag()) {
-      form.submit();
-    } else {
-      hashtagInput.setCustomValidity(currentErrorMessage);
-      hashtagInput.reportValidity();
-    }
-  });
+    hashtagInput.addEventListener(`input`, resetErrorMessage);
+  };
 
-  hashtagInput.addEventListener(`input`, resetErrorMessage);
+  window.hashtag = {
+    addListeners,
+  };
 })();
