@@ -1,6 +1,7 @@
 'use strict';
 
 (() => {
+  const ONE_HUNDRED = 100;
   const Zoom = {
     MIN: 25,
     MAX: 100,
@@ -16,7 +17,7 @@
 
   const applyCurrentZoom = () => {
     zoomPercent.value = `${currentZoom}%`;
-    uploadedPhoto.style.transform = `scale(${currentZoom / window.data.ONE_HUNDRED})`;
+    uploadedPhoto.style.transform = `scale(${currentZoom / ONE_HUNDRED})`;
   };
 
   const addListeners = () => {
@@ -33,14 +34,15 @@
         applyCurrentZoom();
       }
     });
+  };
 
-    window.form.uploadButton.addEventListener(`change`, () => {
-      currentZoom = Zoom.MAX;
-      applyCurrentZoom();
-    });
+  const reset = () => {
+    currentZoom = Zoom.MAX;
+    applyCurrentZoom();
   };
 
   window.zoom = {
     addListeners,
+    reset,
   };
 })();

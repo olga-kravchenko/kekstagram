@@ -22,12 +22,6 @@
   const MIN_COMMENT_QUANTITY = 1;
   const MAX_COMMENT_QUANTITY = 10;
 
-
-
-  const ONE_HUNDRED = 100;
-
-  const EMPTY_STRING = ``;
-
   const getRandomComments = (quantity) => {
     const comments = [];
     for (let i = 0; i < quantity; i++) {
@@ -55,8 +49,6 @@
   };
 
   window.data = {
-    EMPTY_STRING,
-    ONE_HUNDRED,
     getPhotos,
   };
 

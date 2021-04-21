@@ -4,6 +4,8 @@
   const INITIAL_PERCENT = 100;
   const MAX_PERCENT = 100;
   const LINE_LENGTH = 453;
+  const ONE_HUNDRED = 100;
+  const EMPTY_STRING = ``;
   const MaxEffect = {
     CHROME: 1,
     SEPIA: 1,
@@ -27,42 +29,44 @@
     PHOBOS: `blur`,
     HEAT: `brightness`,
   };
-  const effectsGroup = document.querySelector(`.effects`);
   const uploadedPhoto = document.querySelector(`.img-upload__preview img`);
-  const effectLevelLine = document.querySelector(`.effect-level__line`);
-  const effectPin = effectLevelLine.querySelector(`.effect-level__pin`);
-  const effectDepth = effectLevelLine.querySelector(`.effect-level__depth`);
+  const effectsGroup = document.querySelector(`.effects`);
+  const effectLevel = document.querySelector(`.effect-level`);
+  const effectLine = effectLevel.querySelector(`.effect-level__line`);
+  const pin = effectLevel.querySelector(`.effect-level__pin`);
+  const levelDepth = effectLevel.querySelector(`.effect-level__depth`);
+
   let currentEffect = FilterEffect.ORIGIN;
   let currentPercent = INITIAL_PERCENT;
 
-  const setEffectLineAndPin = (evt) => {
+  const setLevelLineAndPin = (evt) => {
     currentPercent = Math.floor((evt.offsetX * MAX_PERCENT) / LINE_LENGTH);
-    effectPin.style.left = `${currentPercent}%`;
-    effectDepth.style.width = `${currentPercent}%`;
+    pin.style.left = `${currentPercent}%`;
+    levelDepth.style.width = `${currentPercent}%`;
   };
 
   const resetCurrentPercent = () => {
     currentPercent = INITIAL_PERCENT;
-    effectPin.style.left = `${currentPercent}%`;
-    effectDepth.style.width = `${currentPercent}%`;
+    pin.style.left = `${currentPercent}%`;
+    levelDepth.style.width = `${currentPercent}%`;
   };
 
-  const toggleEffectLine = () => {
+  const toggleEffectLevel = () => {
     if (currentEffect === `none`) {
-      window.form.effectLevel.classList.add(`hidden`);
+      effectLevel.classList.add(`hidden`);
     } else {
-      window.form.effectLevel.classList.remove(`hidden`);
+      effectLevel.classList.remove(`hidden`);
     }
   };
 
   const getEffectValue = (maxValue) => {
-    return (currentPercent * maxValue) / window.data.ONE_HUNDRED;
+    return (currentPercent * maxValue) / ONE_HUNDRED;
   };
 
   const addEffect = () => {
     let filterEffect;
     let filter;
-    toggleEffectLine();
+    toggleEffectLevel();
     switch (currentEffect) {
       case Filter.ORIGIN:
         filterEffect = `${FilterEffect.ORIGIN}`;
@@ -89,15 +93,22 @@
         break;
     }
     uploadedPhoto.style.filter = filterEffect;
-    uploadedPhoto.className = window.data.EMPTY_STRING;
+    uploadedPhoto.className = EMPTY_STRING;
     if (filter) {
       uploadedPhoto.classList.add(`effects__preview--${filter}`);
     }
   };
 
+  const reset = () => {
+    resetCurrentPercent();
+    currentEffect = FilterEffect.ORIGIN;
+    addEffect();
+    document.querySelector(`input#effect-none`).checked = true;
+  };
+
   const addListeners = () => {
-    effectLevelLine.addEventListener(`click`, (evt) => {
-      setEffectLineAndPin(evt);
+    effectLine.addEventListener(`click`, (evt) => {
+      setLevelLineAndPin(evt);
       addEffect();
     });
 
@@ -106,15 +117,10 @@
       currentEffect = evt.target.value;
       addEffect();
     });
-
-    window.form.uploadButton.addEventListener(`change`, () => {
-      resetCurrentPercent();
-      currentEffect = FilterEffect.ORIGIN;
-      addEffect();
-    });
   };
 
   window.filters = {
     addListeners,
+    reset,
   };
 })();

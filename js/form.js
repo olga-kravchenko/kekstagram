@@ -56,15 +56,17 @@
     removeCallBacksToCloseModal();
   };
 
-  const uploadPhoto = () => {
+  const addListenersToUpload = () => {
     uploadButton.addEventListener(`change`, (evt) => {
       evt.preventDefault();
       openModal();
+      window.filters.reset();
+      window.zoom.reset();
     });
   };
 
   const activate = () => {
-    uploadPhoto();
+    addListenersToUpload();
     window.filters.addListeners();
     window.zoom.addListeners();
     window.hashtag.addListeners();
@@ -72,7 +74,5 @@
 
   window.form = {
     activate,
-    uploadButton,
-    effectLevel,
   };
 })();

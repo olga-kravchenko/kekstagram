@@ -6,14 +6,14 @@
 
   const addCommentsToParent = (parent, comments) => {
     window.util.cleanContent(socialComments);
-    for (let i = 0; i < comments.length; i++) {
+    for (let comment of comments) {
       const newComment = window.util.createNewElement(`li`, `social__comment`);
-      parent.appendChild(newComment);
       const avatar = window.util.createNewElement(`img`, `social__picture`);
-      avatar.src = comments[i].avatar;
-      avatar.alt = comments[i].name;
+      const text = window.util.createNewElement(`p`, `social__text`, comment.message);
+      parent.appendChild(newComment);
+      avatar.src = comment.avatar;
+      avatar.alt = comment.name;
       newComment.appendChild(avatar);
-      const text = window.util.createNewElement(`p`, `social__text`, comments[i].message);
       newComment.appendChild(text);
     }
   };

@@ -3,17 +3,17 @@
 (() => {
   const body = document.querySelector(`body`);
   const preview = document.querySelector(`.big-picture`);
-  const cancelButton = preview.querySelector(`#picture-cancel`);
+  const closeButton = preview.querySelector(`#picture-cancel`);
   const commentCounter = document.querySelector(`.social__comment-count`);
   const commentLoader = document.querySelector(`.comments-loader`);
   const pictures = document.querySelector(`.pictures`);
   let photos;
 
-  const render = (newPhotos) => {
+  const render = (photosNew) => {
     const fragment = document.createDocumentFragment();
-    for (let i = 0; i < newPhotos.length; i++) {
-      const newPhoto = window.picture.render(newPhotos[i]);
-      photos = newPhotos;
+    for (let photoNew of photosNew) {
+      const newPhoto = window.picture.render(photoNew);
+      photos = photosNew;
       fragment.appendChild(newPhoto);
     }
     pictures.appendChild(fragment);
@@ -36,23 +36,23 @@
       const picture = evt.target.closest(`.picture`);
       if (picture) {
         const id = picture.dataset.id;
-        showModal();
         window.preview.render(photos[id]);
+        showModal();
       }
     });
 
-    cancelButton.addEventListener(`click`, hideModal);
+    closeButton.addEventListener(`click`, hideModal);
 
-    const onEscKey = (evt) => {
+    const onEscKeydown = (evt) => {
       const isEscape = evt.key === `Escape`;
-      const isBigPhotoHidden = !preview.classList.contains(`hidden`);
-      if (isEscape && isBigPhotoHidden) {
+      const isPreviewShow = preview.classList.contains(`hidden`);
+      if (isEscape && !isPreviewShow) {
         evt.preventDefault();
         hideModal();
       }
     };
 
-    document.addEventListener(`keydown`, onEscKey);
+    document.addEventListener(`keydown`, onEscKeydown);
   };
 
   const activate = (photosNew) => {

@@ -1,6 +1,8 @@
 'use strict';
 
 (() => {
+  const EMPTY_STRING = ``;
+
   const getRandomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min) + min);
   };
@@ -15,7 +17,7 @@
   };
 
   const cleanContent = (cleaningPlace) => {
-    cleaningPlace.innerHTML = window.data.EMPTY_STRING;
+    cleaningPlace.innerHTML = EMPTY_STRING;
   };
 
   window.util = {
