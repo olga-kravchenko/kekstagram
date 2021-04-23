@@ -24,6 +24,13 @@
     closeModal();
   };
 
+  const onUploadBottomChange = (evt) => {
+    evt.preventDefault();
+    openModal();
+    window.filters.reset();
+    window.zoom.reset();
+  };
+
   const showModal = () => {
     modal.classList.remove(`hidden`);
     body.classList.add(`modal-open`);
@@ -36,16 +43,6 @@
     uploadButton.value = ``;
   };
 
-  const addCallBacksToCloseModal = () => {
-    document.addEventListener(`keydown`, onEscKeydown);
-    closeButton.addEventListener(`click`, onCloseButtonClick);
-  };
-
-  const removeCallBacksToCloseModal = () => {
-    document.removeEventListener(`keydown`, onEscKeydown);
-    closeButton.removeEventListener(`click`, onCloseButtonClick);
-  };
-
   const openModal = () => {
     showModal();
     addCallBacksToCloseModal();
@@ -56,13 +53,17 @@
     removeCallBacksToCloseModal();
   };
 
+  const addCallBacksToCloseModal = () => {
+    document.addEventListener(`keydown`, onEscKeydown);
+    closeButton.addEventListener(`click`, onCloseButtonClick);
+  };
+  const removeCallBacksToCloseModal = () => {
+    document.removeEventListener(`keydown`, onEscKeydown);
+    closeButton.removeEventListener(`click`, onCloseButtonClick);
+  };
+
   const addListenersToUpload = () => {
-    uploadButton.addEventListener(`change`, (evt) => {
-      evt.preventDefault();
-      openModal();
-      window.filters.reset();
-      window.zoom.reset();
-    });
+    uploadButton.addEventListener(`change`, onUploadBottomChange);
   };
 
   const activate = () => {

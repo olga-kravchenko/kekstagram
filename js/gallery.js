@@ -2,20 +2,20 @@
 
 (() => {
   const body = document.querySelector(`body`);
-  const preview = document.querySelector(`.big-picture`);
+  const pictures = body.querySelector(`.pictures`);
+  const preview = body.querySelector(`.big-picture`);
   const closeButton = preview.querySelector(`#picture-cancel`);
-  const commentCounter = document.querySelector(`.social__comment-count`);
-  const commentLoader = document.querySelector(`.comments-loader`);
-  const pictures = document.querySelector(`.pictures`);
+  const commentCounter = preview.querySelector(`.social__comment-count`);
+  const commentLoader = preview.querySelector(`.comments-loader`);
   let photos;
 
-  const render = (photosNew) => {
+  const render = (photosToRender) => {
     const fragment = document.createDocumentFragment();
-    for (let photoNew of photosNew) {
-      const newPhoto = window.picture.render(photoNew);
-      photos = photosNew;
+    photosToRender.forEach((photoToRender) => {
+      const newPhoto = window.picture.render(photoToRender);
+      photos = photosToRender;
       fragment.appendChild(newPhoto);
-    }
+    });
     pictures.appendChild(fragment);
   };
 
@@ -31,27 +31,27 @@
     body.classList.remove(`modal-open`);
   };
 
+  const onPicturesClick = (evt) => {
+    const picture = evt.target.closest(`.picture`);
+    if (picture) {
+      const id = picture.dataset.id;
+      window.preview.render(photos[id]);
+      showModal();
+    }
+  };
+
+  const onEscKeydown = (evt) => {
+    const isEscape = evt.key === `Escape`;
+    const isPreviewShow = preview.classList.contains(`hidden`);
+    if (isEscape && !isPreviewShow) {
+      evt.preventDefault();
+      hideModal();
+    }
+  };
+
   const addListeners = () => {
-    pictures.addEventListener(`click`, (evt) => {
-      const picture = evt.target.closest(`.picture`);
-      if (picture) {
-        const id = picture.dataset.id;
-        window.preview.render(photos[id]);
-        showModal();
-      }
-    });
-
+    pictures.addEventListener(`click`, onPicturesClick);
     closeButton.addEventListener(`click`, hideModal);
-
-    const onEscKeydown = (evt) => {
-      const isEscape = evt.key === `Escape`;
-      const isPreviewShow = preview.classList.contains(`hidden`);
-      if (isEscape && !isPreviewShow) {
-        evt.preventDefault();
-        hideModal();
-      }
-    };
-
     document.addEventListener(`keydown`, onEscKeydown);
   };
 

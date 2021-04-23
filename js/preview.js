@@ -2,11 +2,10 @@
 
 (() => {
   const preview = document.querySelector(`.big-picture`);
-  const socialComments = document.querySelector(`.social__comments`);
+  const socialComments = preview.querySelector(`.social__comments`);
 
-  const addCommentsToParent = (parent, comments) => {
-    window.util.cleanContent(socialComments);
-    for (let comment of comments) {
+  const createNewComment = (parent, comments) => {
+    comments.forEach((comment) => {
       const newComment = window.util.createNewElement(`li`, `social__comment`);
       const avatar = window.util.createNewElement(`img`, `social__picture`);
       const text = window.util.createNewElement(`p`, `social__text`, comment.message);
@@ -15,7 +14,12 @@
       avatar.alt = comment.name;
       newComment.appendChild(avatar);
       newComment.appendChild(text);
-    }
+    });
+  };
+
+  const addCommentsToParent = (parent, comments) => {
+    window.util.cleanContent(socialComments);
+    createNewComment(parent, comments);
   };
 
   const render = (photo) => {

@@ -51,5 +51,4 @@
   window.data = {
     getPhotos,
   };
-
 })();

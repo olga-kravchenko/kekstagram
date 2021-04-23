@@ -1,7 +1,6 @@
 'use strict';
 
 (() => {
-  const ONE_HUNDRED = 100;
   const Zoom = {
     MIN: 25,
     MAX: 100,
@@ -9,15 +8,16 @@
     INITIAL: 100,
   };
 
-  const uploadedPhoto = document.querySelector(`.img-upload__preview img`);
-  const zoomOutButton = document.querySelector(`.scale__control--smaller`);
-  const zoomInButton = document.querySelector(`.scale__control--bigger`);
-  const zoomPercent = document.querySelector(`.scale__control--value`);
+  const modal = document.querySelector(`.img-upload__overlay`);
+  const uploadedPhoto = modal.querySelector(`.img-upload__preview img`);
+  const zoomOutButton = modal.querySelector(`.scale__control--smaller`);
+  const zoomInButton = modal.querySelector(`.scale__control--bigger`);
+  const zoomPercent = modal.querySelector(`.scale__control--value`);
   let currentZoom = Zoom.INITIAL;
 
   const applyCurrentZoom = () => {
     zoomPercent.value = `${currentZoom}%`;
-    uploadedPhoto.style.transform = `scale(${currentZoom / ONE_HUNDRED})`;
+    uploadedPhoto.style.transform = `scale(${currentZoom / window.constants.ONE_HUNDRED})`;
   };
 
   const addListeners = () => {
