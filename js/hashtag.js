@@ -8,8 +8,10 @@
     ERROR_IN_QUANTITY: `Хэштегов должно быть не больше 5`,
   };
   const regex = /^#[\w\d]{1,19}(\s|$)/;
+
   const form = document.querySelector(`.img-upload__form`);
   const hashtagInput = form.querySelector(`.text__hashtags`);
+
   let currentErrorMessage;
 
   const resetErrorMessage = () => {
@@ -19,23 +21,18 @@
 
   const checkWithRegex = (hashtags) => {
     let isValidity;
-    for (const hashtag of hashtags) {
-      if (regex.test(hashtag)) {
-        isValidity = true;
-        currentErrorMessage = Message.NO_ERROR;
-      } else {
-        isValidity = false;
-        currentErrorMessage = Message.ERROR_IN_HASHTAG;
-        break;
-      }
-    }
+
+    isValidity = hashtags.every((hashtag) => regex.test(hashtag));
+    currentErrorMessage = isValidity ? Message.NO_ERROR : Message.ERROR_IN_HASHTAG;
     return isValidity;
   };
 
   const checkHashtag = () => {
     let isValidity;
     let hashtags = hashtagInput.value.trim().split(` `);
-    if (hashtagInput.value.trim() === window.constants.EMPTY_STRING) {
+    const isEmpty = hashtagInput.value.trim() === window.constants.EMPTY_STRING;
+
+    if (isEmpty) {
       isValidity = true;
     } else if (hashtags.length > MAX_QUANTITY) {
       currentErrorMessage = Message.ERROR_IN_QUANTITY;

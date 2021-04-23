@@ -56,8 +56,8 @@
   };
 
   const activate = (photosNew) => {
-    addListeners();
     render(photosNew);
+    addListeners();
   };
 
   window.gallery = {

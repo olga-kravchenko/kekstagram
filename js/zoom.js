@@ -13,6 +13,7 @@
   const zoomOutButton = modal.querySelector(`.scale__control--smaller`);
   const zoomInButton = modal.querySelector(`.scale__control--bigger`);
   const zoomPercent = modal.querySelector(`.scale__control--value`);
+
   let currentZoom = Zoom.INITIAL;
 
   const applyCurrentZoom = () => {
@@ -20,20 +21,23 @@
     uploadedPhoto.style.transform = `scale(${currentZoom / window.constants.ONE_HUNDRED})`;
   };
 
-  const addListeners = () => {
-    zoomInButton.addEventListener(`click`, () => {
-      if (currentZoom < Zoom.MAX) {
-        currentZoom += Zoom.STEP;
-        applyCurrentZoom();
-      }
-    });
+  const zoomIn = () => {
+    if (currentZoom < Zoom.MAX) {
+      currentZoom += Zoom.STEP;
+      applyCurrentZoom();
+    }
+  };
 
-    zoomOutButton.addEventListener(`click`, () => {
-      if (currentZoom > Zoom.MIN) {
-        currentZoom -= Zoom.STEP;
-        applyCurrentZoom();
-      }
-    });
+  const zoomOut = () => {
+    if (currentZoom > Zoom.MIN) {
+      currentZoom -= Zoom.STEP;
+      applyCurrentZoom();
+    }
+  };
+
+  const addListeners = () => {
+    zoomInButton.addEventListener(`click`, zoomIn);
+    zoomOutButton.addEventListener(`click`, zoomOut);
   };
 
   const reset = () => {

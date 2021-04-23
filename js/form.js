@@ -13,6 +13,7 @@
     const isEscape = evt.key === `Escape`;
     const isHashtagOutOfFocus = hashTagInput !== document.activeElement;
     const isCommentOutOfFocus = commentInput !== document.activeElement;
+
     if (isEscape && isHashtagOutOfFocus && isCommentOutOfFocus) {
       evt.preventDefault();
       closeModal();
@@ -24,11 +25,11 @@
     closeModal();
   };
 
-  const onUploadBottomChange = (evt) => {
+  const onUploadButtonChange = (evt) => {
     evt.preventDefault();
-    openModal();
     window.filters.reset();
     window.zoom.reset();
+    openModal();
   };
 
   const showModal = () => {
@@ -44,33 +45,34 @@
   };
 
   const openModal = () => {
-    showModal();
     addCallBacksToCloseModal();
+    showModal();
   };
 
   const closeModal = () => {
-    hideModal();
     removeCallBacksToCloseModal();
+    hideModal();
   };
 
   const addCallBacksToCloseModal = () => {
     document.addEventListener(`keydown`, onEscKeydown);
     closeButton.addEventListener(`click`, onCloseButtonClick);
   };
+
   const removeCallBacksToCloseModal = () => {
     document.removeEventListener(`keydown`, onEscKeydown);
     closeButton.removeEventListener(`click`, onCloseButtonClick);
   };
 
   const addListenersToUpload = () => {
-    uploadButton.addEventListener(`change`, onUploadBottomChange);
+    uploadButton.addEventListener(`change`, onUploadButtonChange);
   };
 
   const activate = () => {
-    addListenersToUpload();
     window.filters.addListeners();
     window.zoom.addListeners();
     window.hashtag.addListeners();
+    addListenersToUpload();
   };
 
   window.form = {

@@ -27,6 +27,7 @@
     PHOBOS: `blur`,
     HEAT: `brightness`,
   };
+
   const modal = document.querySelector(`.img-upload__overlay`);
   const uploadedPhoto = modal.querySelector(`.img-upload__preview img`);
   const effectsGroup = modal.querySelector(`.effects`);
@@ -34,6 +35,7 @@
   const effectLine = effectLevel.querySelector(`.effect-level__line`);
   const pin = effectLevel.querySelector(`.effect-level__pin`);
   const levelDepth = effectLevel.querySelector(`.effect-level__depth`);
+
   let currentEffect = FilterEffect.ORIGIN;
   let currentPercent = INITIAL_PERCENT;
 
@@ -100,8 +102,8 @@
   const reset = () => {
     resetCurrentPercent();
     currentEffect = FilterEffect.ORIGIN;
-    addEffect();
     document.querySelector(`input#effect-none`).checked = true;
+    addEffect();
   };
 
   const onEffectLineClick = (evt) => {
