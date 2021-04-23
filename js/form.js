@@ -29,6 +29,7 @@
     evt.preventDefault();
     window.filters.reset();
     window.zoom.reset();
+    window.hashtag.reset();
     openModal();
   };
 

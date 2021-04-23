@@ -57,7 +57,12 @@
     hashtagInput.addEventListener(`input`, resetErrorMessage);
   };
 
+  const reset = () => {
+    hashtagInput.value = window.constants.EMPTY_STRING;
+  };
+
   window.hashtag = {
     addListeners,
+    reset,
   };
 })();
