@@ -2,6 +2,7 @@
 
 (() => {
   const body = document.querySelector(`body`);
+  const form = body.querySelector(`#upload-select-image`);
   const uploadButton = body.querySelector(`#upload-file`);
   const modal = body.querySelector(`.img-upload__overlay`);
   const closeButton = modal.querySelector(`#upload-cancel`);
@@ -27,8 +28,6 @@
 
   const onUploadButtonChange = (evt) => {
     evt.preventDefault();
-    window.filters.reset();
-    window.zoom.reset();
     openModal();
   };
 
@@ -41,7 +40,9 @@
   const hideModal = () => {
     modal.classList.add(`hidden`);
     body.classList.remove(`modal-open`);
-    uploadButton.value = ``;
+    window.filters.reset();
+    window.zoom.reset();
+    form.reset();
   };
 
   const openModal = () => {

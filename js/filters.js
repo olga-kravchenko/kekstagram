@@ -38,9 +38,27 @@
 
   let currentEffect = FilterEffect.ORIGIN;
   let currentPercent = INITIAL_PERCENT;
+  let currentValue = LINE_LENGTH;
+
+  const calculateCurrentValue = (evt) => {
+    const type = evt.type;
+
+    if (type === `click`) {
+      currentValue = evt.offsetX;
+    } else if (type === `mousemove`) {
+      currentValue += evt.movementX;
+    }
+  };
+
+  const calculateCurrentPercent = () => {
+    currentPercent = currentValue * MAX_PERCENT / LINE_LENGTH;
+    currentPercent = currentPercent < 0 ? 0 : currentPercent;
+    currentPercent = currentPercent > 100 ? 100 : currentPercent;
+  };
 
   const setEffectLineAndPin = (evt) => {
-    currentPercent = Math.floor((evt.offsetX * MAX_PERCENT) / LINE_LENGTH);
+    calculateCurrentValue(evt);
+    calculateCurrentPercent();
     pin.style.left = `${currentPercent}%`;
     levelDepth.style.width = `${currentPercent}%`;
   };
@@ -49,6 +67,7 @@
     currentPercent = INITIAL_PERCENT;
     pin.style.left = `${currentPercent}%`;
     levelDepth.style.width = `${currentPercent}%`;
+    currentValue = LINE_LENGTH;
   };
 
   const toggleEffectLevel = () => {
@@ -107,8 +126,10 @@
   };
 
   const onEffectLineClick = (evt) => {
-    setEffectLineAndPin(evt);
-    addEffect();
+    if (evt.target !== pin) {
+      setEffectLineAndPin(evt);
+      addEffect();
+    }
   };
 
   const onEffectGroupChange = (evt) => {
@@ -117,7 +138,24 @@
     addEffect();
   };
 
+  const onDocumentMouseMove = (evt) => {
+    setEffectLineAndPin(evt);
+    addEffect();
+  };
+
+  const onDocumentMouseUp = () => {
+    document.removeEventListener(`mousemove`, onDocumentMouseMove);
+    document.removeEventListener(`mouseup`, onDocumentMouseUp);
+  };
+
+
+  const addMouseListenersToDocument = () => {
+    document.addEventListener(`mousemove`, onDocumentMouseMove);
+    document.addEventListener(`mouseup`, onDocumentMouseUp);
+  };
+
   const addListeners = () => {
+    pin.addEventListener(`mousedown`, addMouseListenersToDocument);
     effectLine.addEventListener(`click`, onEffectLineClick);
     effectsGroup.addEventListener(`change`, onEffectGroupChange);
   };
