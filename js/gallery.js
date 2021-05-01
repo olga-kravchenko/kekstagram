@@ -11,11 +11,12 @@
 
   const render = (photosToRender) => {
     const fragment = document.createDocumentFragment();
-    photosToRender.forEach((photoToRender) => {
-      const newPhoto = window.picture.render(photoToRender);
+    for (let i = 0; i < photosToRender.length; i++) {
+      let photoToRender = photosToRender[i];
+      const newPhoto = window.picture.render(photoToRender, i);
       photos = photosToRender;
       fragment.appendChild(newPhoto);
-    });
+    }
     pictures.appendChild(fragment);
   };
 

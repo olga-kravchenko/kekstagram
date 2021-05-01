@@ -23,12 +23,12 @@
     });
   };
 
-  function fillPreviewByInfo(photo) {
+  const fillPreviewByInfo = (photo) => {
     preview.querySelector(`.big-picture__img img`).src = photo.url;
     preview.querySelector(`.likes-count`).textContent = photo.likes;
     preview.querySelector(`.comments-count`).textContent = photo.comments.length;
     preview.querySelector(`.social__caption`).textContent = photo.description;
-  }
+  };
 
   const render = (photo) => {
     fillPreviewByInfo(photo);

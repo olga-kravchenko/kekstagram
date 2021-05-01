@@ -1449,3 +1449,33 @@ main {
 .hidden {
   display: none;
 }
+
+.modal-error {
+  position: absolute;
+  top: 0;
+  left: 23px;
+  right: 0;
+  z-index: 100;
+  width: 566px;
+  padding: 22px;
+  margin: 330px auto;
+  font-size: 21px;
+  text-align: center;
+  line-height: 33px;
+  background-color: #ff4d4d;
+  border-radius: 15px;
+  box-shadow: 0 0 26px 12px yellow;
+}
+
+.modal-error:before {
+  position: absolute;
+  content: ":(";
+  top: 21px;
+  left: 14px;
+  rotation: 90deg;
+  width: 34px;
+  height: 34px;
+  color: black;
+  border-radius: 50%;
+  background-color: yellow;
+}
