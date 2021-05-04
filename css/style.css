@@ -1469,10 +1469,10 @@ main {
 
 .modal-error:before {
   position: absolute;
-  content: ":(";
+  content: ": (";
+  transform: rotate(90deg);
   top: 21px;
   left: 14px;
-  rotation: 90deg;
   width: 34px;
   height: 34px;
   color: black;
