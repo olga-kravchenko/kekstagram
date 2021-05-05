@@ -2,8 +2,11 @@
 
 (() => {
   const STATUS_CODE_OK = 200;
-  const STATUS_CODE_BAD_REQUEST = 400;
   const TIMEOUT_IN_MS = 10000;
+  const URL = {
+    SEND: `https://21.javascript.pages.academy/kekstagram`,
+    UPLOAD: `https://21.javascript.pages.academy/kekstagram/data`,
+  };
 
   const onLoadRequest = (request, onLoad, onError) => {
     if (request.status === STATUS_CODE_OK) {
@@ -16,31 +19,20 @@
   const onErrorRequest = (onError) => onError(`Произошла ошибка соединения`);
   const onTimeoutRequest = (onError) => onError(`Запрос не успел выполниться за ${TIMEOUT_IN_MS} мс`);
 
-  const upload = (onSuccess, onError) => {
-    const URL = `https://21.javascript.pages.academy/kekstagram/data`;
+  const sendRequest = (onSuccess, onError, requestMethod, data) => {
     const request = new XMLHttpRequest();
-    request.timeout = TIMEOUT_IN_MS;
     request.responseType = `json`;
-
+    request.timeout = TIMEOUT_IN_MS;
     request.addEventListener(`load`, () => onLoadRequest(request, onSuccess, onError));
     request.addEventListener(`error`, () => onErrorRequest(onError));
     request.addEventListener(`timeout`, () => onTimeoutRequest(onError));
-    request.open(`GET`, URL);
-    request.send();
-  };
-
-
-  const send = (data, onSuccess, onError) => {
-    const URL = `https://21.javascript.pages.academy/kekstagram`;
-    const request = new XMLHttpRequest();
-    request.timeout = TIMEOUT_IN_MS;
-    request.responseType = `json`;
-    request.addEventListener(`load`, () => onLoadRequest(request, onSuccess, onError));
-    request.addEventListener(`error`, () => onErrorRequest(onError));
-    request.addEventListener(`timeout`, () => onTimeoutRequest(onError, request.timeout));
-    request.open(`POST`, URL);
+    const url = requestMethod === `POST` ? URL.SEND : URL.UPLOAD;
+    request.open(requestMethod, url);
     request.send(data);
   };
+
+  const upload = (onSuccess, onError) => sendRequest(onSuccess, onError, `GET`);
+  const send = (data, onSuccess, onError) => sendRequest(onSuccess, onError, `POST`, data);
 
   window.backend = {
     upload,

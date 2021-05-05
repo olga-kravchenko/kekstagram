@@ -8,7 +8,6 @@
     const newComment = window.util.createNewElement(`li`, `social__comment`);
     const avatar = window.util.createNewElement(`img`, `social__picture`);
     const text = window.util.createNewElement(`p`, `social__text`, comment.message);
-
     avatar.src = comment.avatar;
     avatar.alt = comment.name;
     newComment.appendChild(avatar);

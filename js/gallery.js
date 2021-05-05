@@ -16,14 +16,18 @@
     }
   };
 
-  const render = (photosToRender) => {
-    const fragment = document.createDocumentFragment();
+  const renderPhotos = (photosToRender, fragment) => {
     for (let i = 0; i < photosToRender.length; i++) {
       let photoToRender = photosToRender[i];
       const newPhoto = window.picture.render(photoToRender);
       photos = photosToRender;
       fragment.appendChild(newPhoto);
     }
+  };
+
+  const render = (photosToRender) => {
+    const fragment = document.createDocumentFragment();
+    renderPhotos(photosToRender, fragment);
     pictures.appendChild(fragment);
   };
 
