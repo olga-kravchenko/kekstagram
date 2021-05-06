@@ -67,20 +67,20 @@
 
   const onSuccess = () => {
     closeModal();
-    window.util.showSuccessModal();
+    window.utilForm.showSuccessModal();
   };
 
   const onError = () => {
     closeModal();
-    window.util.showErrorModal();
+    window.utilForm.showErrorModal();
   };
 
   const sendFormDataToServer = (evt) => {
     evt.preventDefault();
     if (window.hashtag.checkHashtag()) {
-      window.backend.send(new FormData(form), onSuccess, onError);
+      window.backend.post(new FormData(form), onSuccess, onError);
     } else {
-      window.hashtag.onSubmitForm();
+      window.hashtag.showErrorMessage();
     }
   };
 
