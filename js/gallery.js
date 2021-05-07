@@ -9,13 +9,25 @@
   const commentLoader = preview.querySelector(`.comments-loader`);
   let photos;
 
-  const render = (photosToRender) => {
-    const fragment = document.createDocumentFragment();
-    photosToRender.forEach((photoToRender) => {
+  const addId = (photosToRender) => {
+    for (let i = 0; i < photosToRender.length; i++) {
+      const photoToRender = photosToRender[i];
+      photoToRender.id = i;
+    }
+  };
+
+  const renderPhotos = (photosToRender, fragment) => {
+    for (let i = 0; i < photosToRender.length; i++) {
+      let photoToRender = photosToRender[i];
       const newPhoto = window.picture.render(photoToRender);
       photos = photosToRender;
       fragment.appendChild(newPhoto);
-    });
+    }
+  };
+
+  const render = (photosToRender) => {
+    const fragment = document.createDocumentFragment();
+    renderPhotos(photosToRender, fragment);
     pictures.appendChild(fragment);
   };
 
@@ -56,6 +68,7 @@
   };
 
   const activate = (photosNew) => {
+    addId(photosNew);
     render(photosNew);
     addListeners();
   };

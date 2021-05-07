@@ -18,9 +18,21 @@
     cleaningPlace.innerHTML = window.constants.EMPTY_STRING;
   };
 
+  const showErrorMessage = (errorMessage) => {
+    const errorModal = document.createElement(`div`);
+    errorModal.classList.add(`modal-error`);
+    errorModal.textContent = errorMessage;
+    document.body.insertAdjacentElement(`afterbegin`, errorModal);
+
+    setTimeout(() => {
+      errorModal.remove();
+    }, 3000);
+  };
+
   window.util = {
     getRandomNumber,
     createNewElement,
     cleanContent,
+    showErrorMessage,
   };
 })();

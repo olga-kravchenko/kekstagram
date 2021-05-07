@@ -8,7 +8,6 @@
     const newComment = window.util.createNewElement(`li`, `social__comment`);
     const avatar = window.util.createNewElement(`img`, `social__picture`);
     const text = window.util.createNewElement(`p`, `social__text`, comment.message);
-
     avatar.src = comment.avatar;
     avatar.alt = comment.name;
     newComment.appendChild(avatar);
@@ -23,12 +22,12 @@
     });
   };
 
-  function fillPreviewByInfo(photo) {
+  const fillPreviewByInfo = (photo) => {
     preview.querySelector(`.big-picture__img img`).src = photo.url;
     preview.querySelector(`.likes-count`).textContent = photo.likes;
     preview.querySelector(`.comments-count`).textContent = photo.comments.length;
     preview.querySelector(`.social__caption`).textContent = photo.description;
-  }
+  };
 
   const render = (photo) => {
     fillPreviewByInfo(photo);

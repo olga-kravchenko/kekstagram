@@ -65,7 +65,27 @@
     closeButton.removeEventListener(`click`, onCloseButtonClick);
   };
 
+  const onSuccess = () => {
+    closeModal();
+    window.utilForm.showSuccessModal();
+  };
+
+  const onError = () => {
+    closeModal();
+    window.utilForm.showErrorModal();
+  };
+
+  const sendFormDataToServer = (evt) => {
+    evt.preventDefault();
+    if (window.hashtag.checkHashtag()) {
+      window.backend.post(new FormData(form), onSuccess, onError);
+    } else {
+      window.hashtag.showErrorMessage();
+    }
+  };
+
   const addListenersToUpload = () => {
+    form.addEventListener(`submit`, sendFormDataToServer);
     uploadButton.addEventListener(`change`, onUploadButtonChange);
   };
 

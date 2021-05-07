@@ -148,7 +148,6 @@
     document.removeEventListener(`mouseup`, onDocumentMouseUp);
   };
 
-
   const addMouseListenersToDocument = () => {
     document.addEventListener(`mousemove`, onDocumentMouseMove);
     document.addEventListener(`mouseup`, onDocumentMouseUp);

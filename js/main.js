@@ -1,9 +1,9 @@
 'use strict';
 
 (() => {
-  const REQUIRED_PHOTO_QUANTITY = 25;
+  const onSuccess = window.gallery.activate;
+  const onError = window.util.showErrorMessage;
 
-  const photos = window.data.getPhotos(REQUIRED_PHOTO_QUANTITY);
-  window.gallery.activate(photos);
+  window.backend.get(onSuccess, onError);
   window.form.activate();
 })();
