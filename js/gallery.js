@@ -10,8 +10,13 @@
   const filterDefault = document.querySelector(`#filter-default`);
   const filterRandom = document.querySelector(`#filter-random`);
   const filterDiscussed = document.querySelector(`#filter-discussed`);
+  const imgFilters = document.querySelector(`.img-filters`);
   let photos;
-  let newArrPhotos = [];
+  let uploadedPhotos = [];
+
+  const showFilters = () => {
+    imgFilters.classList.remove(`img-filters--inactive`);
+  };
 
   const addId = (photosToRender) => {
     for (let i = 0; i < photosToRender.length; i++) {
@@ -20,10 +25,11 @@
     }
   };
 
-  const renderPhotos = (photosToRender, fragment) => {
+  const renderDefaultPhotos = (photosToRender, fragment) => {
     for (let i = 0; i < photosToRender.length; i++) {
       let photoToRender = photosToRender[i];
       const newPhoto = window.picture.render(photoToRender);
+      photos = photosToRender;
       fragment.appendChild(newPhoto);
     }
   };
@@ -36,72 +42,68 @@
       if (!photoShown.includes(photoToRender)) {
         photoShown.push(photoToRender);
         const newPhoto = window.picture.render(photoToRender);
+        photos = photosToRender;
         fragment.appendChild(newPhoto);
       }
     }
   };
 
-  const renderSortPhotos = (photosToRender, fragment) => {
-    let photoSortShown = [...photosToRender];
-    for (let i = 0; i < photoSortShown.length; i++) {
-      photoSortShown.sort((o1, o2) => o2.comments.length - o1.comments.length);
-      let photoToRender = photoSortShown[i];
+  const renderDiscussedPhotos = (photosToRender, fragment) => {
+    let newPhotosToRender = [...photosToRender];
+    for (let i = 0; i < newPhotosToRender.length; i++) {
+      newPhotosToRender.sort((o1, o2) => o2.comments.length - o1.comments.length);
+      let photoToRender = newPhotosToRender[i];
       const newPhoto = window.picture.render(photoToRender);
+      photos = photosToRender;
       fragment.appendChild(newPhoto);
     }
   };
 
-  const render = (photosToRender, bottom) => {
+  const render = (photosToRender, button) => {
     const fragment = document.createDocumentFragment();
-    if (bottom === filterRandom) {
+    if (button === filterRandom) {
       renderRandomPhotos(photosToRender, fragment);
-    } else if (bottom === filterDefault) {
-      renderPhotos(photosToRender, fragment);
-    } else if (bottom === filterDiscussed) {
-      renderSortPhotos(photosToRender, fragment);
+    } else if (button === filterDefault) {
+      renderDefaultPhotos(photosToRender, fragment);
+    } else if (button === filterDiscussed) {
+      renderDiscussedPhotos(photosToRender, fragment);
     } else {
-      renderPhotos(photosToRender, fragment);
+      renderDefaultPhotos(photosToRender, fragment);
     }
     pictures.appendChild(fragment);
   };
 
-  const updatePhotos = (bottom) => {
-    render(newArrPhotos, bottom);
-  };
-
-  const renderUpdatePhotos = (data) => {
-    newArrPhotos = data;
-    window.myCoolPhotos = data;
-    updatePhotos();
-  };
-
   const removePictures = () => {
-    document.querySelectorAll(`.picture`).forEach((e)=>e.remove());
+    document.querySelectorAll(`.picture`).forEach((element) => element.remove());
   };
 
-  filterDefault.addEventListener(`click`, () => {
+  const applyFilterDefault = () => {
     removePictures();
     filterDefault.classList.add(`img-filters__button--active`);
     filterRandom.classList.remove(`img-filters__button--active`);
     filterDiscussed.classList.remove(`img-filters__button--active`);
-    updatePhotos(filterDefault);
-  });
+    window.util.debounce(filterDefault);
+  };
 
-  filterRandom.addEventListener(`click`, () => {
+  const applyFilterRandom = () => {
     removePictures();
     filterRandom.classList.add(`img-filters__button--active`);
     filterDefault.classList.remove(`img-filters__button--active`);
     filterDiscussed.classList.remove(`img-filters__button--active`);
-    updatePhotos(filterRandom);
-  });
+    window.util.debounce(filterRandom);
+  };
 
-  filterDiscussed.addEventListener(`click`, () => {
+  const applyFilterDiscussed = () => {
     removePictures();
     filterDiscussed.classList.add(`img-filters__button--active`);
     filterDefault.classList.remove(`img-filters__button--active`);
     filterRandom.classList.remove(`img-filters__button--active`);
-    updatePhotos(filterDiscussed);
-  });
+    window.util.debounce(filterDiscussed);
+  };
+
+  filterDefault.addEventListener(`click`, applyFilterDefault);
+  filterRandom.addEventListener(`click`, applyFilterRandom);
+  filterDiscussed.addEventListener(`click`, applyFilterDiscussed);
 
   const showModal = () => {
     preview.classList.remove(`hidden`);
@@ -139,9 +141,13 @@
     document.addEventListener(`keydown`, onEscKeydown);
   };
 
-  const imgFilters = document.querySelector(`.img-filters`);
-  const showFilters = () => {
-    imgFilters.classList.remove(`img-filters--inactive`);
+  const updatePhotos = (button) => {
+    render(uploadedPhotos, button);
+  };
+
+  const renderUpdatePhotos = (data) => {
+    uploadedPhotos = data;
+    updatePhotos();
   };
 
   const activate = (photosNew) => {
@@ -153,5 +159,6 @@
 
   window.gallery = {
     activate,
+    updatePhotos,
   };
 })();

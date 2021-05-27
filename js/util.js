@@ -1,6 +1,8 @@
 'use strict';
 
 (() => {
+  let lastTimeout;
+
   const getRandomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min) + min);
   };
@@ -29,7 +31,17 @@
     }, 3000);
   };
 
+  const debounce = (parameter) => {
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+    lastTimeout = window.setTimeout(() => {
+      window.gallery.updatePhotos(parameter);
+    }, 500);
+  };
+
   window.util = {
+    debounce,
     getRandomNumber,
     createNewElement,
     cleanContent,
