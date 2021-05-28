@@ -1,17 +1,17 @@
 'use strict';
 
 (() => {
+  const QUANTITY_OF_RANDOM_PHOTOS = 10;
   const body = document.querySelector(`body`);
   const pictures = body.querySelector(`.pictures`);
   const preview = body.querySelector(`.big-picture`);
   const closeButton = preview.querySelector(`#picture-cancel`);
-  const commentCounter = preview.querySelector(`.social__comment-count`);
-  const commentLoader = preview.querySelector(`.comments-loader`);
 
   const defaultFilterButton = document.querySelector(`#filter-default`);
   const randomFilterButton = document.querySelector(`#filter-random`);
   const discussedFilterButton = document.querySelector(`#filter-discussed`);
   const imgFilters = document.querySelector(`.img-filters`);
+  const filtersButton = body.querySelectorAll(`.img-filters__button`);
 
   let defaultPhotos;
 
@@ -31,8 +31,8 @@
 
   const appendRandomPhotosToFragment = (fragment) => {
     let shownPhotos = [];
-    while (shownPhotos.length < 10) {
-      const randomNumber = window.util.getRandomNumber(0, defaultPhotos.length);
+    while (shownPhotos.length < QUANTITY_OF_RANDOM_PHOTOS) {
+      const randomNumber = window.util.getRandomNumber(window.constants.MIN_ARRAY_INDEX, defaultPhotos.length);
       let randomPhoto = defaultPhotos[randomNumber];
       if (!shownPhotos.includes(randomPhoto)) {
         shownPhotos.push(randomPhoto);
@@ -53,42 +53,42 @@
 
   const render = (clickedButton) => {
     const fragment = document.createDocumentFragment();
-    if (clickedButton === randomFilterButton) {
-      appendRandomPhotosToFragment(fragment);
-    } else if (clickedButton === discussedFilterButton) {
-      appendDiscussedPhotosToFragment(fragment);
-    } else {
-      appendDefaultPhotosToFragment(fragment);
+    switch (clickedButton) {
+      case randomFilterButton:
+        appendRandomPhotosToFragment(fragment);
+        break;
+      case discussedFilterButton:
+        appendDiscussedPhotosToFragment(fragment);
+        break;
+      default:
+        appendDefaultPhotosToFragment(fragment);
+        break;
     }
     pictures.appendChild(fragment);
   };
 
   const removePictures = () => {
-    document.querySelectorAll(`.picture`).forEach((element) => element.remove());
+    body.querySelectorAll(`.picture`).forEach((element) => element.remove());
   };
 
-  const filtersButton = document.querySelectorAll(`.img-filters__button`);
-
-  const addActiveButton = (button) => {
+  const switchActiveButton = (button) => {
     filtersButton.forEach((b) => b.classList.remove(`img-filters__button--active`));
     button.classList.add(`img-filters__button--active`);
   };
 
-  const checkButton = (button) => {
+  const showPhotos = (button) => {
     if (!button.classList.contains(`img-filters__button--active`)) {
-      addActiveButton(button);
+      switchActiveButton(button);
       window.util.debounce(button);
     }
   };
 
-  const applyFilterDefault = () => checkButton(defaultFilterButton);
-  const applyFilterRandom = () => checkButton(randomFilterButton);
-  const applyFilterDiscussed = () => checkButton(discussedFilterButton);
+  const applyFilterDefault = () => showPhotos(defaultFilterButton);
+  const applyFilterRandom = () => showPhotos(randomFilterButton);
+  const applyFilterDiscussed = () => showPhotos(discussedFilterButton);
 
   const showModal = () => {
     preview.classList.remove(`hidden`);
-    // commentCounter.classList.add(`hidden`);
-    // commentLoader.classList.add(`hidden`);
     body.classList.add(`modal-open`);
   };
 
@@ -134,6 +134,7 @@
     render();
     addListeners();
     showFilters();
+
   };
 
   window.gallery = {
