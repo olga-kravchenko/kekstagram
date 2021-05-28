@@ -3,7 +3,7 @@
 (() => {
   const pictureTemplate = document.querySelector(`#picture`).content;
 
-  const render = (photo) => {
+  const create = (photo) => {
     const newPhoto = pictureTemplate.cloneNode(true);
     newPhoto.querySelector(`.picture`).dataset.id = photo.id;
     newPhoto.querySelector(`.picture__img`).src = photo.url;
@@ -13,6 +13,6 @@
   };
 
   window.picture = {
-    render
+    create,
   };
 })();

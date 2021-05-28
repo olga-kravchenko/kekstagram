@@ -7,68 +7,58 @@
   const closeButton = preview.querySelector(`#picture-cancel`);
   const commentCounter = preview.querySelector(`.social__comment-count`);
   const commentLoader = preview.querySelector(`.comments-loader`);
-  const filterDefault = document.querySelector(`#filter-default`);
-  const filterRandom = document.querySelector(`#filter-random`);
-  const filterDiscussed = document.querySelector(`#filter-discussed`);
+
+  const defaultFilterButton = document.querySelector(`#filter-default`);
+  const randomFilterButton = document.querySelector(`#filter-random`);
+  const discussedFilterButton = document.querySelector(`#filter-discussed`);
   const imgFilters = document.querySelector(`.img-filters`);
-  let photos;
-  let uploadedPhotos = [];
 
-  const showFilters = () => {
-    imgFilters.classList.remove(`img-filters--inactive`);
-  };
+  let defaultPhotos;
 
-  const addId = (photosToRender) => {
-    for (let i = 0; i < photosToRender.length; i++) {
-      const photoToRender = photosToRender[i];
+  const addId = () => {
+    for (let i = 0; i < defaultPhotos.length; i++) {
+      const photoToRender = defaultPhotos[i];
       photoToRender.id = i;
     }
   };
 
-  const renderDefaultPhotos = (photosToRender, fragment) => {
-    for (let i = 0; i < photosToRender.length; i++) {
-      let photoToRender = photosToRender[i];
-      const newPhoto = window.picture.render(photoToRender);
-      photos = photosToRender;
-      fragment.appendChild(newPhoto);
+  const appendDefaultPhotosToFragment = (fragment) => {
+    for (let i = 0; i < defaultPhotos.length; i++) {
+      const photo = window.picture.create(defaultPhotos[i]);
+      fragment.appendChild(photo);
     }
   };
 
-  const renderRandomPhotos = (photosToRender, fragment) => {
-    let photoShown = [];
-    while (photoShown.length < 10) {
-      const randomNumber = window.util.getRandomNumber(0, photosToRender.length);
-      let photoToRender = photosToRender[randomNumber];
-      if (!photoShown.includes(photoToRender)) {
-        photoShown.push(photoToRender);
-        const newPhoto = window.picture.render(photoToRender);
-        photos = photosToRender;
-        fragment.appendChild(newPhoto);
+  const appendRandomPhotosToFragment = (fragment) => {
+    let shownPhotos = [];
+    while (shownPhotos.length < 10) {
+      const randomNumber = window.util.getRandomNumber(0, defaultPhotos.length);
+      let randomPhoto = defaultPhotos[randomNumber];
+      if (!shownPhotos.includes(randomPhoto)) {
+        shownPhotos.push(randomPhoto);
+        const photo = window.picture.create(randomPhoto);
+        fragment.appendChild(photo);
       }
     }
   };
 
-  const renderDiscussedPhotos = (photosToRender, fragment) => {
-    let newPhotosToRender = [...photosToRender];
-    for (let i = 0; i < newPhotosToRender.length; i++) {
-      newPhotosToRender.sort((o1, o2) => o2.comments.length - o1.comments.length);
-      let photoToRender = newPhotosToRender[i];
-      const newPhoto = window.picture.render(photoToRender);
-      photos = photosToRender;
-      fragment.appendChild(newPhoto);
+  const appendDiscussedPhotosToFragment = (fragment) => {
+    let copiedPhotos = [...defaultPhotos];
+    for (let i = 0; i < copiedPhotos.length; i++) {
+      copiedPhotos.sort((o1, o2) => o2.comments.length - o1.comments.length);
+      const photo = window.picture.create(copiedPhotos[i]);
+      fragment.appendChild(photo);
     }
   };
 
-  const render = (photosToRender, button) => {
+  const render = (clickedButton) => {
     const fragment = document.createDocumentFragment();
-    if (button === filterRandom) {
-      renderRandomPhotos(photosToRender, fragment);
-    } else if (button === filterDefault) {
-      renderDefaultPhotos(photosToRender, fragment);
-    } else if (button === filterDiscussed) {
-      renderDiscussedPhotos(photosToRender, fragment);
+    if (clickedButton === randomFilterButton) {
+      appendRandomPhotosToFragment(fragment);
+    } else if (clickedButton === discussedFilterButton) {
+      appendDiscussedPhotosToFragment(fragment);
     } else {
-      renderDefaultPhotos(photosToRender, fragment);
+      appendDefaultPhotosToFragment(fragment);
     }
     pictures.appendChild(fragment);
   };
@@ -77,38 +67,28 @@
     document.querySelectorAll(`.picture`).forEach((element) => element.remove());
   };
 
-  const applyFilterDefault = () => {
-    removePictures();
-    filterDefault.classList.add(`img-filters__button--active`);
-    filterRandom.classList.remove(`img-filters__button--active`);
-    filterDiscussed.classList.remove(`img-filters__button--active`);
-    window.util.debounce(filterDefault);
+  const filtersButton = document.querySelectorAll(`.img-filters__button`);
+
+  const addActiveButton = (button) => {
+    filtersButton.forEach((b) => b.classList.remove(`img-filters__button--active`));
+    button.classList.add(`img-filters__button--active`);
   };
 
-  const applyFilterRandom = () => {
-    removePictures();
-    filterRandom.classList.add(`img-filters__button--active`);
-    filterDefault.classList.remove(`img-filters__button--active`);
-    filterDiscussed.classList.remove(`img-filters__button--active`);
-    window.util.debounce(filterRandom);
+  const checkButton = (button) => {
+    if (!button.classList.contains(`img-filters__button--active`)) {
+      addActiveButton(button);
+      window.util.debounce(button);
+    }
   };
 
-  const applyFilterDiscussed = () => {
-    removePictures();
-    filterDiscussed.classList.add(`img-filters__button--active`);
-    filterDefault.classList.remove(`img-filters__button--active`);
-    filterRandom.classList.remove(`img-filters__button--active`);
-    window.util.debounce(filterDiscussed);
-  };
-
-  filterDefault.addEventListener(`click`, applyFilterDefault);
-  filterRandom.addEventListener(`click`, applyFilterRandom);
-  filterDiscussed.addEventListener(`click`, applyFilterDiscussed);
+  const applyFilterDefault = () => checkButton(defaultFilterButton);
+  const applyFilterRandom = () => checkButton(randomFilterButton);
+  const applyFilterDiscussed = () => checkButton(discussedFilterButton);
 
   const showModal = () => {
     preview.classList.remove(`hidden`);
-    commentCounter.classList.add(`hidden`);
-    commentLoader.classList.add(`hidden`);
+    // commentCounter.classList.add(`hidden`);
+    // commentLoader.classList.add(`hidden`);
     body.classList.add(`modal-open`);
   };
 
@@ -121,7 +101,7 @@
     const picture = evt.target.closest(`.picture`);
     if (picture) {
       const id = picture.dataset.id;
-      window.preview.render(photos[id]);
+      window.preview.render(defaultPhotos[id]);
       showModal();
     }
   };
@@ -136,29 +116,29 @@
   };
 
   const addListeners = () => {
+    defaultFilterButton.addEventListener(`click`, applyFilterDefault);
+    randomFilterButton.addEventListener(`click`, applyFilterRandom);
+    discussedFilterButton.addEventListener(`click`, applyFilterDiscussed);
     pictures.addEventListener(`click`, onPicturesClick);
     closeButton.addEventListener(`click`, hideModal);
     document.addEventListener(`keydown`, onEscKeydown);
   };
 
-  const updatePhotos = (button) => {
-    render(uploadedPhotos, button);
-  };
-
-  const renderUpdatePhotos = (data) => {
-    uploadedPhotos = data;
-    updatePhotos();
+  const showFilters = () => {
+    imgFilters.classList.remove(`img-filters--inactive`);
   };
 
   const activate = (photosNew) => {
-    addId(photosNew);
-    renderUpdatePhotos(photosNew);
+    defaultPhotos = photosNew;
+    addId();
+    render();
     addListeners();
     showFilters();
   };
 
   window.gallery = {
     activate,
-    updatePhotos,
+    render,
+    removePictures,
   };
 })();

@@ -3,6 +3,16 @@
 (() => {
   let lastTimeout;
 
+  const debounce = (button) => {
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+    lastTimeout = window.setTimeout(() => {
+      window.gallery.removePictures();
+      window.gallery.render(button);
+    }, 500);
+  };
+
   const getRandomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min) + min);
   };
@@ -29,15 +39,6 @@
     setTimeout(() => {
       errorModal.remove();
     }, 3000);
-  };
-
-  const debounce = (parameter) => {
-    if (lastTimeout) {
-      window.clearTimeout(lastTimeout);
-    }
-    lastTimeout = window.setTimeout(() => {
-      window.gallery.updatePhotos(parameter);
-    }, 500);
   };
 
   window.util = {
