@@ -30,8 +30,12 @@
     commentLoader.classList.remove(`hidden`);
   };
 
+  const showCommentCounter = () => {
+    preview.querySelector(`#comments-counter`).textContent = shownCommentsQuantity;
+  };
+
   const addCommentsToParent = (comments) => {
-    let start = shownCommentsQuantity;
+    let startingQuantityOfComments = shownCommentsQuantity;
     if (shownCommentsQuantity + QUANTITY_SHOW_COMMENTS_STEP < comments.length) {
       shownCommentsQuantity += QUANTITY_SHOW_COMMENTS_STEP;
       showCounterAndCommentLoader();
@@ -39,11 +43,9 @@
       shownCommentsQuantity = comments.length;
       hideCommentLoader();
     }
-
-    preview.querySelector(`#comments-counter`).textContent = shownCommentsQuantity;
-
-    for (start; start < shownCommentsQuantity; start++) {
-      socialComments.appendChild(createNewComment(comments[start]));
+    showCommentCounter();
+    for (; startingQuantityOfComments < shownCommentsQuantity; startingQuantityOfComments++) {
+      socialComments.appendChild(createNewComment(comments[startingQuantityOfComments]));
     }
   };
 

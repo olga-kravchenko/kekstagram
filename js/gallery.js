@@ -2,11 +2,11 @@
 
 (() => {
   const QUANTITY_OF_RANDOM_PHOTOS = 10;
+
   const body = document.querySelector(`body`);
   const pictures = body.querySelector(`.pictures`);
   const preview = body.querySelector(`.big-picture`);
   const closeButton = preview.querySelector(`#picture-cancel`);
-
   const defaultFilterButton = document.querySelector(`#filter-default`);
   const randomFilterButton = document.querySelector(`#filter-random`);
   const discussedFilterButton = document.querySelector(`#filter-discussed`);
@@ -68,7 +68,7 @@
   };
 
   const removePictures = () => {
-    body.querySelectorAll(`.picture`).forEach((element) => element.remove());
+    pictures.querySelectorAll(`.picture`).forEach((element) => element.remove());
   };
 
   const switchActiveButton = (button) => {
@@ -77,7 +77,8 @@
   };
 
   const showPhotos = (button) => {
-    if (!button.classList.contains(`img-filters__button--active`)) {
+    const buttonActive = button.classList.contains(`img-filters__button--active`);
+    if (!buttonActive) {
       switchActiveButton(button);
       window.util.debounce(button);
     }
@@ -103,6 +104,7 @@
       const id = picture.dataset.id;
       window.preview.render(defaultPhotos[id]);
       showModal();
+      addListenersToShow();
     }
   };
 
@@ -112,7 +114,18 @@
     if (isEscape && !isPreviewShow) {
       evt.preventDefault();
       hideModal();
+      removeListenersToHide();
     }
+  };
+
+  const addListenersToShow = () => {
+    closeButton.addEventListener(`click`, hideModal);
+    document.addEventListener(`keydown`, onEscKeydown);
+  };
+
+  const removeListenersToHide = () => {
+    closeButton.removeEventListener(`click`, hideModal);
+    document.removeEventListener(`keydown`, onEscKeydown);
   };
 
   const addListeners = () => {
@@ -120,8 +133,6 @@
     randomFilterButton.addEventListener(`click`, applyFilterRandom);
     discussedFilterButton.addEventListener(`click`, applyFilterDiscussed);
     pictures.addEventListener(`click`, onPicturesClick);
-    closeButton.addEventListener(`click`, hideModal);
-    document.addEventListener(`keydown`, onEscKeydown);
   };
 
   const showFilters = () => {
@@ -134,7 +145,7 @@
     render();
     addListeners();
     showFilters();
-
+    addListeners();
   };
 
   window.gallery = {
