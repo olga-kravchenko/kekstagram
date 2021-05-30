@@ -84,9 +84,9 @@
     }
   };
 
-  const applyFilterDefault = () => showPhotos(defaultFilterButton);
-  const applyFilterRandom = () => showPhotos(randomFilterButton);
-  const applyFilterDiscussed = () => showPhotos(discussedFilterButton);
+  const applyDefaultFilters = () => showPhotos(defaultFilterButton);
+  const applyRandomFilters = () => showPhotos(randomFilterButton);
+  const applyDiscussedFilters = () => showPhotos(discussedFilterButton);
 
   const showModal = () => {
     preview.classList.remove(`hidden`);
@@ -126,12 +126,13 @@
   const removeListenersToHide = () => {
     closeButton.removeEventListener(`click`, hideModal);
     document.removeEventListener(`keydown`, onEscKeydown);
+    window.preview.removeListener();
   };
 
   const addListeners = () => {
-    defaultFilterButton.addEventListener(`click`, applyFilterDefault);
-    randomFilterButton.addEventListener(`click`, applyFilterRandom);
-    discussedFilterButton.addEventListener(`click`, applyFilterDiscussed);
+    defaultFilterButton.addEventListener(`click`, applyDefaultFilters);
+    randomFilterButton.addEventListener(`click`, applyRandomFilters);
+    discussedFilterButton.addEventListener(`click`, applyDiscussedFilters);
     pictures.addEventListener(`click`, onPicturesClick);
   };
 
