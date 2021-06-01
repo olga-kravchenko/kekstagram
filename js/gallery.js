@@ -6,12 +6,13 @@
   const body = document.querySelector(`body`);
   const pictures = body.querySelector(`.pictures`);
   const preview = body.querySelector(`.big-picture`);
-  const closeButton = preview.querySelector(`#picture-cancel`);
   const defaultFilterButton = document.querySelector(`#filter-default`);
   const randomFilterButton = document.querySelector(`#filter-random`);
   const discussedFilterButton = document.querySelector(`#filter-discussed`);
   const imgFilters = document.querySelector(`.img-filters`);
   const filtersButton = body.querySelectorAll(`.img-filters__button`);
+  const commentCounter = preview.querySelector(`.social__comment-count`);
+  const commentLoaderButton = preview.querySelector(`.comments-loader`);
 
   let defaultPhotos;
 
@@ -77,11 +78,16 @@
   };
 
   const showPhotos = (button) => {
-    const buttonActive = button.classList.contains(`img-filters__button--active`);
-    if (!buttonActive) {
+    const isButtonActive = button.classList.contains(`img-filters__button--active`);
+    if (!isButtonActive) {
       switchActiveButton(button);
       window.util.debounce(button);
     }
+  };
+
+  const showCounterAndCommentLoader = () => {
+    commentCounter.classList.remove(`hidden`);
+    commentLoaderButton.classList.remove(`hidden`);
   };
 
   const applyDefaultFilters = () => showPhotos(defaultFilterButton);
@@ -91,11 +97,13 @@
   const showModal = () => {
     preview.classList.remove(`hidden`);
     body.classList.add(`modal-open`);
+    showCounterAndCommentLoader();
   };
 
   const hideModal = () => {
     preview.classList.add(`hidden`);
     body.classList.remove(`modal-open`);
+    window.preview.removeListenersToHidePreview();
   };
 
   const onPicturesClick = (evt) => {
@@ -104,7 +112,6 @@
       const id = picture.dataset.id;
       window.preview.render(defaultPhotos[id]);
       showModal();
-      addListenersToShow();
     }
   };
 
@@ -114,19 +121,7 @@
     if (isEscape && !isPreviewShow) {
       evt.preventDefault();
       hideModal();
-      removeListenersToHide();
     }
-  };
-
-  const addListenersToShow = () => {
-    closeButton.addEventListener(`click`, hideModal);
-    document.addEventListener(`keydown`, onEscKeydown);
-  };
-
-  const removeListenersToHide = () => {
-    closeButton.removeEventListener(`click`, hideModal);
-    document.removeEventListener(`keydown`, onEscKeydown);
-    window.preview.removeListener();
   };
 
   const addListeners = () => {
@@ -146,10 +141,11 @@
     render();
     addListeners();
     showFilters();
-    addListeners();
   };
 
   window.gallery = {
+    hideModal,
+    onEscKeydown,
     activate,
     render,
     removePictures,

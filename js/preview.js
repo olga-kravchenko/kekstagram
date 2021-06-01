@@ -5,8 +5,8 @@
 
   const preview = document.querySelector(`.big-picture`);
   const socialComments = preview.querySelector(`.social__comments`);
-  const commentCounter = preview.querySelector(`.social__comment-count`);
   const commentLoaderButton = preview.querySelector(`.comments-loader`);
+  const closeButton = preview.querySelector(`#picture-cancel`);
 
   let shownCommentsQuantity = 0;
   let currentOpenedPhoto;
@@ -26,20 +26,14 @@
     commentLoaderButton.classList.add(`hidden`);
   };
 
-  const showCounterAndCommentLoader = () => {
-    commentCounter.classList.remove(`hidden`);
-    commentLoaderButton.classList.remove(`hidden`);
-  };
-
   const showCommentCounter = () => {
     preview.querySelector(`#comments-counter`).textContent = shownCommentsQuantity;
-
   };
+
   const addCommentsToParent = (comments) => {
     let startingQuantityOfComments = shownCommentsQuantity;
     if (shownCommentsQuantity + QUANTITY_SHOW_COMMENTS_STEP < comments.length) {
       shownCommentsQuantity += QUANTITY_SHOW_COMMENTS_STEP;
-      showCounterAndCommentLoader();
     } else {
       shownCommentsQuantity = comments.length;
       hideCommentLoader();
@@ -57,29 +51,33 @@
     preview.querySelector(`.social__caption`).textContent = photo.description;
   };
 
-  window.cb = () => {
+  const onCommentLoaderButtonClick = () => {
     addCommentsToParent(currentOpenedPhoto.comments);
   };
 
-  const addListener = () => {
-    commentLoaderButton.addEventListener(`click`, cb);
+  const addListenersToShowPreview = () => {
+    closeButton.addEventListener(`click`, window.gallery.hideModal);
+    document.addEventListener(`keydown`, window.gallery.onEscKeydown);
+    commentLoaderButton.addEventListener(`click`, onCommentLoaderButtonClick);
   };
 
-  const removeListener = () => {
-    commentLoaderButton.removeEventListener(`click`, cb);
+  const removeListenersToHidePreview = () => {
+    closeButton.removeEventListener(`click`, window.gallery.hideModal);
+    document.removeEventListener(`keydown`, window.gallery.onEscKeydown);
+    commentLoaderButton.removeEventListener(`click`, onCommentLoaderButtonClick);
   };
 
   const render = (photo) => {
     currentOpenedPhoto = photo;
     shownCommentsQuantity = 0;
     window.util.cleanContent(socialComments);
-    addListener();
     fillPreviewByInfo(photo);
     addCommentsToParent(photo.comments);
+    addListenersToShowPreview();
   };
 
   window.preview = {
     render,
-    removeListener,
+    removeListenersToHidePreview,
   };
 })();
