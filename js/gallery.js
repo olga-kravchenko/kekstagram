@@ -3,16 +3,12 @@
 (() => {
   const QUANTITY_OF_RANDOM_PHOTOS = 10;
 
-  const body = document.querySelector(`body`);
-  const pictures = body.querySelector(`.pictures`);
-  const preview = body.querySelector(`.big-picture`);
+  const pictures = document.querySelector(`.pictures`);
   const defaultFilterButton = document.querySelector(`#filter-default`);
   const randomFilterButton = document.querySelector(`#filter-random`);
   const discussedFilterButton = document.querySelector(`#filter-discussed`);
   const imgFilters = document.querySelector(`.img-filters`);
-  const filtersButton = body.querySelectorAll(`.img-filters__button`);
-  const commentCounter = preview.querySelector(`.social__comment-count`);
-  const commentLoaderButton = preview.querySelector(`.comments-loader`);
+  const filtersButton = document.querySelectorAll(`.img-filters__button`);
 
   let defaultPhotos;
 
@@ -85,42 +81,15 @@
     }
   };
 
-  const showCounterAndCommentLoader = () => {
-    commentCounter.classList.remove(`hidden`);
-    commentLoaderButton.classList.remove(`hidden`);
-  };
-
   const applyDefaultFilters = () => showPhotos(defaultFilterButton);
   const applyRandomFilters = () => showPhotos(randomFilterButton);
   const applyDiscussedFilters = () => showPhotos(discussedFilterButton);
-
-  const showModal = () => {
-    preview.classList.remove(`hidden`);
-    body.classList.add(`modal-open`);
-    showCounterAndCommentLoader();
-  };
-
-  const hideModal = () => {
-    preview.classList.add(`hidden`);
-    body.classList.remove(`modal-open`);
-    window.preview.removeListenersToHidePreview();
-  };
 
   const onPicturesClick = (evt) => {
     const picture = evt.target.closest(`.picture`);
     if (picture) {
       const id = picture.dataset.id;
       window.preview.render(defaultPhotos[id]);
-      showModal();
-    }
-  };
-
-  const onEscKeydown = (evt) => {
-    const isEscape = evt.key === `Escape`;
-    const isPreviewShow = preview.classList.contains(`hidden`);
-    if (isEscape && !isPreviewShow) {
-      evt.preventDefault();
-      hideModal();
     }
   };
 
@@ -144,8 +113,6 @@
   };
 
   window.gallery = {
-    hideModal,
-    onEscKeydown,
     activate,
     render,
     removePictures,
