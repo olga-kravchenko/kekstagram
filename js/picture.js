@@ -3,16 +3,16 @@
 (() => {
   const pictureTemplate = document.querySelector(`#picture`).content;
 
-  const render = (photo) => {
-    const newPhoto = pictureTemplate.cloneNode(true);
-    newPhoto.querySelector(`.picture`).dataset.id = photo.id;
-    newPhoto.querySelector(`.picture__img`).src = photo.url;
-    newPhoto.querySelector(`.picture__likes`).textContent = photo.likes;
-    newPhoto.querySelector(`.picture__comments`).textContent = photo.comments.length;
-    return newPhoto;
+  const create = (picture) => {
+    const newPicture = pictureTemplate.cloneNode(true);
+    newPicture.querySelector(`.picture`).dataset.id = picture.id;
+    newPicture.querySelector(`.picture__img`).src = picture.url;
+    newPicture.querySelector(`.picture__likes`).textContent = picture.likes;
+    newPicture.querySelector(`.picture__comments`).textContent = picture.comments.length;
+    return newPicture;
   };
 
   window.picture = {
-    render
+    create,
   };
 })();

@@ -3,8 +3,8 @@
 (() => {
   const body = document.querySelector(`body`);
   const form = body.querySelector(`#upload-select-image`);
-  const uploadButton = body.querySelector(`#upload-file`);
-  const modal = body.querySelector(`.img-upload__overlay`);
+  const uploadButton = form.querySelector(`#upload-file`);
+  const modal = form.querySelector(`.img-upload__overlay`);
   const closeButton = modal.querySelector(`#upload-cancel`);
   const effectLevel = modal.querySelector(`.effect-level`);
   const hashTagInput = modal.querySelector(`.text__hashtags`);
