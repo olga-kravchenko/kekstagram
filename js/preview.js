@@ -5,34 +5,13 @@
 
   const body = document.querySelector(`body`);
   const preview = body.querySelector(`.big-picture`);
-  const socialComments = preview.querySelector(`.social__comments`);
-  const commentCounter = preview.querySelector(`.social__comment-count`);
-  const commentLoaderButton = preview.querySelector(`.comments-loader`);
   const closeButton = preview.querySelector(`#picture-cancel`);
+  const commentCounter = preview.querySelector(`.social__comment-count`);
+  const commentsGroup = preview.querySelector(`.social__comments`);
+  const commentLoaderButton = preview.querySelector(`.comments-loader`);
 
-  let shownCommentsQuantity = 0;
-  let currentOpenedPhoto;
-
-  const showModal = () => {
-    preview.classList.remove(`hidden`);
-    body.classList.add(`modal-open`);
-  };
-
-
-  const hideModal = () => {
-    preview.classList.add(`hidden`);
-    body.classList.remove(`modal-open`);
-    removeListenersToHidePreview();
-  };
-
-  const onEscKeydown = (evt) => {
-    const isEscape = evt.key === `Escape`;
-    const isPreviewShow = preview.classList.contains(`hidden`);
-    if (isEscape && !isPreviewShow) {
-      evt.preventDefault();
-      hideModal();
-    }
-  };
+  let quantityOfCommentsShown = 0;
+  let currentOpenedPicture;
 
   const showCounterAndCommentLoader = () => {
     commentCounter.classList.remove(`hidden`);
@@ -55,59 +34,86 @@
   };
 
   const showCommentCounter = () => {
-    preview.querySelector(`#comments-counter`).textContent = shownCommentsQuantity;
+    preview.querySelector(`#comments-counter`).textContent = quantityOfCommentsShown;
   };
 
   const addCommentsToParent = (comments) => {
-    let startingQuantityOfComments = shownCommentsQuantity;
-    if (shownCommentsQuantity + QUANTITY_SHOW_COMMENTS_STEP < comments.length) {
-      shownCommentsQuantity += QUANTITY_SHOW_COMMENTS_STEP;
+    let startingQuantityOfComments = quantityOfCommentsShown;
+    if (quantityOfCommentsShown + QUANTITY_SHOW_COMMENTS_STEP < comments.length) {
+      quantityOfCommentsShown += QUANTITY_SHOW_COMMENTS_STEP;
     } else {
-      shownCommentsQuantity = comments.length;
+      quantityOfCommentsShown = comments.length;
       hideCommentLoader();
     }
     showCommentCounter();
-    for (; startingQuantityOfComments < shownCommentsQuantity; startingQuantityOfComments++) {
-      socialComments.appendChild(createNewComment(comments[startingQuantityOfComments]));
+    for (; startingQuantityOfComments < quantityOfCommentsShown; startingQuantityOfComments++) {
+      commentsGroup.appendChild(createNewComment(comments[startingQuantityOfComments]));
     }
   };
 
-  const fillPreviewByInfo = (photo) => {
-    preview.querySelector(`.big-picture__img img`).src = photo.url;
-    preview.querySelector(`.likes-count`).textContent = photo.likes;
-    preview.querySelector(`.comments-count`).textContent = photo.comments.length;
-    preview.querySelector(`.social__caption`).textContent = photo.description;
+  const fillPreviewByInfo = (picture) => {
+    preview.querySelector(`.big-picture__img img`).src = picture.url;
+    preview.querySelector(`.likes-count`).textContent = picture.likes;
+    preview.querySelector(`.comments-count`).textContent = picture.comments.length;
+    preview.querySelector(`.social__caption`).textContent = picture.description;
   };
 
   const onCommentLoaderButtonClick = () => {
-    addCommentsToParent(currentOpenedPhoto.comments);
+    addCommentsToParent(currentOpenedPicture.comments);
   };
 
-  const addListenersToShowPreview = () => {
+  const addListeners = () => {
     closeButton.addEventListener(`click`, hideModal);
     document.addEventListener(`keydown`, onEscKeydown);
     commentLoaderButton.addEventListener(`click`, onCommentLoaderButtonClick);
   };
 
-  const removeListenersToHidePreview = () => {
+  const removeListeners = () => {
     closeButton.removeEventListener(`click`, hideModal);
     document.removeEventListener(`keydown`, onEscKeydown);
     commentLoaderButton.removeEventListener(`click`, onCommentLoaderButtonClick);
   };
 
-  const render = (photo) => {
-    currentOpenedPhoto = photo;
-    shownCommentsQuantity = 0;
-    showCounterAndCommentLoader();
+  const showModal = () => {
+    preview.classList.remove(`hidden`);
+    body.classList.add(`modal-open`);
+  };
+
+  const hideModal = () => {
+    preview.classList.add(`hidden`);
+    body.classList.remove(`modal-open`);
+  };
+
+  const openModal = (picture) => {
     showModal();
-    window.util.cleanContent(socialComments);
-    fillPreviewByInfo(photo);
-    addCommentsToParent(photo.comments);
-    addListenersToShowPreview();
+    showCounterAndCommentLoader();
+    window.util.cleanContent(commentsGroup);
+    fillPreviewByInfo(picture);
+    addCommentsToParent(picture.comments);
+    addListeners();
+  }
+
+  const closeModal = () => {
+    hideModal()
+    removeListeners();
+  }
+
+  const onEscKeydown = (evt) => {
+    const isEscape = evt.key === `Escape`;
+    const isPreviewShow = preview.classList.contains(`hidden`);
+    if (isEscape && !isPreviewShow) {
+      evt.preventDefault();
+      closeModal();
+    }
+  };
+
+  const show = (picture) => {
+    currentOpenedPicture = picture;
+    quantityOfCommentsShown = 0;
+    openModal(picture);
   };
 
   window.preview = {
-    render,
-    removeListenersToHidePreview,
+    show,
   };
 })();

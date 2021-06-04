@@ -29,7 +29,7 @@
   };
 
   const modal = document.querySelector(`.img-upload__overlay`);
-  const uploadedPhoto = modal.querySelector(`.img-upload__preview img`);
+  const uploadedPicture = modal.querySelector(`.img-upload__preview img`);
   const effectsGroup = modal.querySelector(`.effects`);
   const effectLevel = modal.querySelector(`.effect-level`);
   const effectLine = effectLevel.querySelector(`.effect-level__line`);
@@ -111,10 +111,10 @@
         filter = Filter.HEAT;
         break;
     }
-    uploadedPhoto.style.filter = filterEffect;
-    uploadedPhoto.className = window.constants.EMPTY_STRING;
+    uploadedPicture.style.filter = filterEffect;
+    uploadedPicture.className = window.constants.EMPTY_STRING;
     if (filter) {
-      uploadedPhoto.classList.add(`effects__preview--${filter}`);
+      uploadedPicture.classList.add(`effects__preview--${filter}`);
     }
   };
 

@@ -1,50 +1,50 @@
 'use strict';
 
 (() => {
-  const QUANTITY_OF_RANDOM_PHOTOS = 10;
+  const QUANTITY_OF_RANDOM_PICTURES = 10;
 
   const pictures = document.querySelector(`.pictures`);
-  const defaultFilterButton = document.querySelector(`#filter-default`);
-  const randomFilterButton = document.querySelector(`#filter-random`);
-  const discussedFilterButton = document.querySelector(`#filter-discussed`);
-  const imgFilters = document.querySelector(`.img-filters`);
-  const filtersButton = document.querySelectorAll(`.img-filters__button`);
+  const FilterButtonsGroup = document.querySelector(`.img-filters`);
+  const filterButtons = FilterButtonsGroup.querySelectorAll(`.img-filters__button`);
+  const defaultFilterButton = FilterButtonsGroup.querySelector(`#filter-default`);
+  const randomFilterButton = FilterButtonsGroup.querySelector(`#filter-random`);
+  const discussedFilterButton = FilterButtonsGroup.querySelector(`#filter-discussed`);
 
-  let defaultPhotos;
+  let defaultPictures;
 
   const addId = () => {
-    for (let i = 0; i < defaultPhotos.length; i++) {
-      const photoToRender = defaultPhotos[i];
-      photoToRender.id = i;
+    for (let i = 0; i < defaultPictures.length; i++) {
+      const pictureToRender = defaultPictures[i];
+      pictureToRender.id = i;
     }
   };
 
-  const appendDefaultPhotosToFragment = (fragment) => {
-    for (let i = 0; i < defaultPhotos.length; i++) {
-      const photo = window.picture.create(defaultPhotos[i]);
-      fragment.appendChild(photo);
+  const appendDefaultPicturesToFragment = (fragment) => {
+    for (let i = 0; i < defaultPictures.length; i++) {
+      const picture = window.picture.create(defaultPictures[i]);
+      fragment.appendChild(picture);
     }
   };
 
-  const appendRandomPhotosToFragment = (fragment) => {
-    let shownPhotos = [];
-    while (shownPhotos.length < QUANTITY_OF_RANDOM_PHOTOS) {
-      const randomNumber = window.util.getRandomNumber(window.constants.MIN_ARRAY_INDEX, defaultPhotos.length);
-      let randomPhoto = defaultPhotos[randomNumber];
-      if (!shownPhotos.includes(randomPhoto)) {
-        shownPhotos.push(randomPhoto);
-        const photo = window.picture.create(randomPhoto);
-        fragment.appendChild(photo);
+  const appendRandomPicturesToFragment = (fragment) => {
+    let shownPictures = [];
+    while (shownPictures.length < QUANTITY_OF_RANDOM_PICTURES) {
+      const randomNumber = window.util.getRandomNumber(window.constants.MIN_ARRAY_INDEX, defaultPictures.length);
+      let randomPicture = defaultPictures[randomNumber];
+      if (!shownPictures.includes(randomPicture)) {
+        shownPictures.push(randomPicture);
+        const picture = window.picture.create(randomPicture);
+        fragment.appendChild(picture);
       }
     }
   };
 
-  const appendDiscussedPhotosToFragment = (fragment) => {
-    let copiedPhotos = [...defaultPhotos];
-    for (let i = 0; i < copiedPhotos.length; i++) {
-      copiedPhotos.sort((o1, o2) => o2.comments.length - o1.comments.length);
-      const photo = window.picture.create(copiedPhotos[i]);
-      fragment.appendChild(photo);
+  const appendDiscussedPicturesToFragment = (fragment) => {
+    let copiedPicture = [...defaultPictures];
+    for (let i = 0; i < copiedPicture.length; i++) {
+      copiedPicture.sort((o1, o2) => o2.comments.length - o1.comments.length);
+      const picture = window.picture.create(copiedPicture[i]);
+      fragment.appendChild(picture);
     }
   };
 
@@ -52,13 +52,13 @@
     const fragment = document.createDocumentFragment();
     switch (clickedButton) {
       case randomFilterButton:
-        appendRandomPhotosToFragment(fragment);
+        appendRandomPicturesToFragment(fragment);
         break;
       case discussedFilterButton:
-        appendDiscussedPhotosToFragment(fragment);
+        appendDiscussedPicturesToFragment(fragment);
         break;
       default:
-        appendDefaultPhotosToFragment(fragment);
+        appendDefaultPicturesToFragment(fragment);
         break;
     }
     pictures.appendChild(fragment);
@@ -69,11 +69,11 @@
   };
 
   const switchActiveButton = (button) => {
-    filtersButton.forEach((b) => b.classList.remove(`img-filters__button--active`));
+    filterButtons.forEach((b) => b.classList.remove(`img-filters__button--active`));
     button.classList.add(`img-filters__button--active`);
   };
 
-  const showPhotos = (button) => {
+  const showPictures = (button) => {
     const isButtonActive = button.classList.contains(`img-filters__button--active`);
     if (!isButtonActive) {
       switchActiveButton(button);
@@ -81,15 +81,15 @@
     }
   };
 
-  const applyDefaultFilters = () => showPhotos(defaultFilterButton);
-  const applyRandomFilters = () => showPhotos(randomFilterButton);
-  const applyDiscussedFilters = () => showPhotos(discussedFilterButton);
+  const applyDefaultFilters = () => showPictures(defaultFilterButton);
+  const applyRandomFilters = () => showPictures(randomFilterButton);
+  const applyDiscussedFilters = () => showPictures(discussedFilterButton);
 
-  const onPicturesClick = (evt) => {
+  const onPictureClick = (evt) => {
     const picture = evt.target.closest(`.picture`);
     if (picture) {
       const id = picture.dataset.id;
-      window.preview.render(defaultPhotos[id]);
+      window.preview.show(defaultPictures[id]);
     }
   };
 
@@ -97,15 +97,15 @@
     defaultFilterButton.addEventListener(`click`, applyDefaultFilters);
     randomFilterButton.addEventListener(`click`, applyRandomFilters);
     discussedFilterButton.addEventListener(`click`, applyDiscussedFilters);
-    pictures.addEventListener(`click`, onPicturesClick);
+    pictures.addEventListener(`click`, onPictureClick);
   };
 
   const showFilters = () => {
-    imgFilters.classList.remove(`img-filters--inactive`);
+    FilterButtonsGroup.classList.remove(`img-filters--inactive`);
   };
 
-  const activate = (photosNew) => {
-    defaultPhotos = photosNew;
+  const activate = (newPictures) => {
+    defaultPictures = newPictures;
     addId();
     render();
     addListeners();

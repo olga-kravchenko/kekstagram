@@ -8,7 +8,7 @@
     INITIAL: 100,
   };
   const modal = document.querySelector(`.img-upload__overlay`);
-  const uploadedPhoto = modal.querySelector(`.img-upload__preview img`);
+  const uploadedPicture = modal.querySelector(`.img-upload__preview img`);
   const zoomOutButton = modal.querySelector(`.scale__control--smaller`);
   const zoomInButton = modal.querySelector(`.scale__control--bigger`);
   const zoomPercent = modal.querySelector(`.scale__control--value`);
@@ -16,7 +16,7 @@
 
   const applyCurrentZoom = () => {
     zoomPercent.value = `${currentZoom}%`;
-    uploadedPhoto.style.transform = `scale(${currentZoom / window.constants.ONE_HUNDRED})`;
+    uploadedPicture.style.transform = `scale(${currentZoom / window.constants.ONE_HUNDRED})`;
   };
 
   const zoomIn = () => {
