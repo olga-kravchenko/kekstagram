@@ -7,11 +7,12 @@ module.exports = {
     `./js/util-form.js`,
     `./js/util.js`,
     `./js/picture.js`,
-    `./js/preview.js`,
+    `./js/big-picture.js`,
     `./js/gallery.js`,
     `./js/filters.js`,
     `./js/zoom.js`,
     `./js/hashtag.js`,
+    `./js/preview.js`,
     `./js/form.js`,
     `./js/main.js`
   ],

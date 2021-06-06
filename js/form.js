@@ -86,6 +86,7 @@ const sendFormDataToServer = (evt) => {
 const addListenersToUpload = () => {
   form.addEventListener(`submit`, sendFormDataToServer);
   uploadButton.addEventListener(`change`, onUploadButtonChange);
+  window.preview.addListener();
 };
 
 const activate = () => {
