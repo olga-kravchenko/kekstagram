@@ -90,12 +90,12 @@ const openModal = (picture) => {
   fillBigPictureByInfo(picture);
   addCommentsToParent(picture.comments);
   addListeners();
-}
+};
 
 const closeModal = () => {
-  hideModal()
+  hideModal();
   removeListeners();
-}
+};
 
 const onEscKeydown = (evt) => {
   const isEscape = evt.key === `Escape`;

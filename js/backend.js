@@ -2,7 +2,7 @@
 
 const STATUS_CODE_OK = 200;
 const TIMEOUT_IN_MS = 10000;
-const URL = {
+const SERVER_URL = {
   GET: `https://21.javascript.pages.academy/kekstagram/data`,
   POST: `https://21.javascript.pages.academy/kekstagram`,
 };
@@ -25,7 +25,7 @@ const sendRequest = (onSuccess, onError, requestMethod, data) => {
   request.addEventListener(`load`, () => onLoadRequest(request, onSuccess, onError));
   request.addEventListener(`error`, () => onErrorRequest(onError));
   request.addEventListener(`timeout`, () => onTimeoutRequest(onError));
-  const url = requestMethod === `POST` ? URL.POST : URL.GET;
+  const url = requestMethod === `POST` ? SERVER_URL.POST : SERVER_URL.GET;
   request.open(requestMethod, url);
   request.send(data);
 };
