@@ -8,29 +8,26 @@ const previewOfEffects = document.querySelectorAll(`.effects__preview`);
 
 const reader = new FileReader();
 
-const changePreviewSrc = () => {
+const changePreviewUrl = () => {
   preview.src = reader.result;
   previewOfEffects.forEach((previewEffect) => {
     previewEffect.style.backgroundImage = `url(${reader.result})`;
-  })
+  });
 };
 
-const newPreview = () => {
+const changeNewPreview = () => {
   const file = fileSelection.files[0];
   const fileName = file.name.toLowerCase();
-
-  const matchingTypes = FILE_TYPES.some((type) => {
-    return fileName.endsWith(type);
-  });
-
-  if (matchingTypes) {
-    reader.addEventListener(`load`, changePreviewSrc);
-    reader.readAsDataURL(file);
+  reader.readAsDataURL(file);
+  const checkEndOfTheName = (type) => fileName.endsWith(type);
+  const matchingTheFileType = FILE_TYPES.some(checkEndOfTheName);
+  if (matchingTheFileType) {
+    reader.addEventListener(`load`, changePreviewUrl);
   }
 };
 
 const addListener = () => {
-  fileSelection.addEventListener(`change`, newPreview);
+  fileSelection.addEventListener(`change`, changeNewPreview);
 };
 
 window.preview = {
