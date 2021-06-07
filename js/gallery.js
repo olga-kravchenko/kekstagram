@@ -88,7 +88,7 @@ const onPictureClick = (evt) => {
   const picture = evt.target.closest(`.picture`);
   if (picture) {
     const id = picture.dataset.id;
-    window.preview.show(defaultPictures[id]);
+    window.bigPicture.show(defaultPictures[id]);
   }
 };
 
