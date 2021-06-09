@@ -41,7 +41,6 @@ let currentValue = LINE_LENGTH;
 
 const calculateCurrentValue = (evt) => {
   const type = evt.type;
-
   if (type === `click`) {
     currentValue = evt.offsetX;
   } else if (type === `mousemove`) {
@@ -77,9 +76,7 @@ const toggleEffectLevel = () => {
   }
 };
 
-const getEffectValue = (maxValue) => {
-  return (currentPercent * maxValue) / window.constants.ONE_HUNDRED;
-};
+const getEffectValue = (maxValue) => (currentPercent * maxValue) / window.constants.ONE_HUNDRED;
 
 const addEffect = () => {
   let filterEffect;

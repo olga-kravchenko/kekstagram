@@ -7,8 +7,10 @@ const Message = {
   ERROR_IN_HASHTAG: `Хэштег начинается с # и длинной не больше 19 символов`,
   ERROR_IN_QUANTITY: `Хэштегов должно быть не больше 5`,
 };
+
 const form = document.querySelector(`.img-upload__form`);
 const hashtagInput = form.querySelector(`.text__hashtags`);
+
 let currentErrorMessage;
 
 const resetErrorMessage = () => {
