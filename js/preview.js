@@ -26,9 +26,7 @@ const changeNewPreview = () => {
   }
 };
 
-const addListener = () => {
-  fileSelection.addEventListener(`change`, changeNewPreview);
-};
+const addListener = () => fileSelection.addEventListener(`change`, changeNewPreview);
 
 window.preview = {
   addListener,

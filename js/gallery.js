@@ -63,9 +63,7 @@ const render = (clickedButton) => {
   pictures.appendChild(fragment);
 };
 
-const removePictures = () => {
-  pictures.querySelectorAll(`.picture`).forEach((element) => element.remove());
-};
+const removePictures = () => pictures.querySelectorAll(`.picture`).forEach((element) => element.remove());
 
 const switchActiveButton = (button) => {
   filterButtons.forEach((b) => b.classList.remove(`img-filters__button--active`));
@@ -99,9 +97,7 @@ const addListeners = () => {
   pictures.addEventListener(`click`, onPictureClick);
 };
 
-const showFilters = () => {
-  FilterButtonsGroup.classList.remove(`img-filters--inactive`);
-};
+const showFilters = () => FilterButtonsGroup.classList.remove(`img-filters--inactive`);
 
 const activate = (newPictures) => {
   defaultPictures = newPictures;

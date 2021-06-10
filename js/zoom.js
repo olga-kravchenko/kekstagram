@@ -6,11 +6,13 @@ const Zoom = {
   STEP: 25,
   INITIAL: 100,
 };
+
 const modal = document.querySelector(`.img-upload__overlay`);
 const uploadedPicture = modal.querySelector(`.img-upload__preview img`);
 const zoomOutButton = modal.querySelector(`.scale__control--smaller`);
 const zoomInButton = modal.querySelector(`.scale__control--bigger`);
 const zoomPercent = modal.querySelector(`.scale__control--value`);
+
 let currentZoom = Zoom.INITIAL;
 
 const applyCurrentZoom = () => {

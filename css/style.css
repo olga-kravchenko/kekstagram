@@ -1479,3 +1479,8 @@ main {
   border-radius: 50%;
   background-color: yellow;
 }
+
+.text__hashtags:invalid {
+  border: 2px solid red;
+  color: red;
+}

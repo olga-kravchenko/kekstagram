@@ -1,6 +1,6 @@
 'use strict';
 
-const QUANTITY_SHOW_COMMENTS_STEP = 5;
+const STEP_QUANTITY_OF_COMMENTS_SHOWN = 5;
 
 const body = document.querySelector(`body`);
 const bigPicture = body.querySelector(`.big-picture`);
@@ -8,11 +8,12 @@ const closeButton = bigPicture.querySelector(`#picture-cancel`);
 const commentCounter = bigPicture.querySelector(`.social__comment-count`);
 const commentsGroup = bigPicture.querySelector(`.social__comments`);
 const commentLoaderButton = bigPicture.querySelector(`.comments-loader`);
+const counterOfShownComments = commentCounter.querySelector(`#comments-counter`)
 
 let quantityOfCommentsShown = 0;
 let currentOpenedPicture;
 
-const showCounterAndCommentLoader = () => {
+const showCounterAndCommentLoaderButton = () => {
   commentCounter.classList.remove(`hidden`);
   commentLoaderButton.classList.remove(`hidden`);
 };
@@ -20,26 +21,21 @@ const showCounterAndCommentLoader = () => {
 const createNewComment = (comment) => {
   const newComment = window.util.createNewElement(`li`, `social__comment`);
   const avatar = window.util.createNewElement(`img`, `social__picture`);
-  const text = window.util.createNewElement(`p`, `social__text`, comment.message);
+  const message = window.util.createNewElement(`p`, `social__text`, comment.message);
   avatar.src = comment.avatar;
   avatar.alt = comment.name;
   newComment.appendChild(avatar);
-  newComment.appendChild(text);
+  newComment.appendChild(message);
   return newComment;
 };
 
-const hideCommentLoader = () => {
-  commentLoaderButton.classList.add(`hidden`);
-};
-
-const showCommentCounter = () => {
-  bigPicture.querySelector(`#comments-counter`).textContent = quantityOfCommentsShown;
-};
+const hideCommentLoader = () => commentLoaderButton.classList.add(`hidden`);
+const showCommentCounter = () => counterOfShownComments.textContent = quantityOfCommentsShown;
 
 const addCommentsToParent = (comments) => {
   let startingQuantityOfComments = quantityOfCommentsShown;
-  if (quantityOfCommentsShown + QUANTITY_SHOW_COMMENTS_STEP < comments.length) {
-    quantityOfCommentsShown += QUANTITY_SHOW_COMMENTS_STEP;
+  if (quantityOfCommentsShown + STEP_QUANTITY_OF_COMMENTS_SHOWN < comments.length) {
+    quantityOfCommentsShown += STEP_QUANTITY_OF_COMMENTS_SHOWN;
   } else {
     quantityOfCommentsShown = comments.length;
     hideCommentLoader();
@@ -57,18 +53,16 @@ const fillBigPictureByInfo = (picture) => {
   bigPicture.querySelector(`.social__caption`).textContent = picture.description;
 };
 
-const onCommentLoaderButtonClick = () => {
-  addCommentsToParent(currentOpenedPicture.comments);
-};
+const onCommentLoaderButtonClick = () => addCommentsToParent(currentOpenedPicture.comments);
 
 const addListeners = () => {
-  closeButton.addEventListener(`click`, hideModal);
+  closeButton.addEventListener(`click`, closeModal);
   document.addEventListener(`keydown`, onEscKeydown);
   commentLoaderButton.addEventListener(`click`, onCommentLoaderButtonClick);
 };
 
 const removeListeners = () => {
-  closeButton.removeEventListener(`click`, hideModal);
+  closeButton.removeEventListener(`click`, closeModal);
   document.removeEventListener(`keydown`, onEscKeydown);
   commentLoaderButton.removeEventListener(`click`, onCommentLoaderButtonClick);
 };
@@ -85,7 +79,7 @@ const hideModal = () => {
 
 const openModal = (picture) => {
   showModal();
-  showCounterAndCommentLoader();
+  showCounterAndCommentLoaderButton();
   window.util.cleanContent(commentsGroup);
   fillBigPictureByInfo(picture);
   addCommentsToParent(picture.comments);
@@ -115,4 +109,3 @@ const show = (picture) => {
 window.bigPicture = {
   show,
 };
-

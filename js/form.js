@@ -13,7 +13,6 @@ const onEscKeydown = (evt) => {
   const isEscape = evt.key === `Escape`;
   const isHashtagOutOfFocus = hashTagInput !== document.activeElement;
   const isCommentOutOfFocus = commentInput !== document.activeElement;
-
   if (isEscape && isHashtagOutOfFocus && isCommentOutOfFocus) {
     evt.preventDefault();
     closeModal();
