@@ -3,6 +3,7 @@
 const INITIAL_PERCENT = 100;
 const MAX_PERCENT = 100;
 const LINE_LENGTH = 453;
+
 const MaxEffect = {
   CHROME: 1,
   SEPIA: 1,
@@ -31,6 +32,7 @@ const modal = document.querySelector(`.img-upload__overlay`);
 const uploadedPicture = modal.querySelector(`.img-upload__preview img`);
 const effectsGroup = modal.querySelector(`.effects`);
 const effectLevel = modal.querySelector(`.effect-level`);
+const effectLevelValue = modal.querySelector(`.effect-level__value`);
 const effectLine = effectLevel.querySelector(`.effect-level__line`);
 const pin = effectLevel.querySelector(`.effect-level__pin`);
 const levelDepth = effectLevel.querySelector(`.effect-level__depth`);
@@ -38,6 +40,8 @@ const levelDepth = effectLevel.querySelector(`.effect-level__depth`);
 let currentEffect = FilterEffect.ORIGIN;
 let currentPercent = INITIAL_PERCENT;
 let currentValue = LINE_LENGTH;
+
+effectLevelValue.value = window.constants.EMPTY_STRING;
 
 const calculateCurrentValue = (evt) => {
   const type = evt.type;
@@ -59,12 +63,14 @@ const setEffectLineAndPin = (evt) => {
   calculateCurrentPercent();
   pin.style.left = `${currentPercent}%`;
   levelDepth.style.width = `${currentPercent}%`;
+  effectLevelValue.value = `${Math.floor(currentPercent)}`;
 };
 
 const resetCurrentPercent = () => {
   currentPercent = INITIAL_PERCENT;
   pin.style.left = `${currentPercent}%`;
   levelDepth.style.width = `${currentPercent}%`;
+  effectLevelValue.value = `${Math.floor(currentPercent)}`;
   currentValue = LINE_LENGTH;
 };
 

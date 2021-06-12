@@ -21,5 +21,5 @@ module.exports = {
     path: path.resolve(__dirname),
     iife: true
   },
-  devtool: false
+  devtool: "eval"
 }

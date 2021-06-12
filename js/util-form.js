@@ -10,7 +10,7 @@ const renderSuccessModal = () => {
   return modalSuccess;
 };
 
-const removeSuccessModal = (evt) => {
+const onSuccessButtonClick = (evt) => {
   evt.preventDefault();
   document.querySelector(`.success`).remove();
 };
@@ -21,7 +21,7 @@ const renderErrorModal = () => {
   return modalError;
 };
 
-const removeErrorModal = (evt) => {
+const onErrorButtonClick = (evt) => {
   evt.preventDefault();
   document.querySelector(`.error`).remove();
 };
@@ -30,9 +30,9 @@ const onEscapeKeydown = (evt) => {
   const success = main.querySelector(`.success`);
   const error = main.querySelector(`.error`);
   if (evt.key === `Escape` && success) {
-    removeSuccessModal(evt);
+    onSuccessButtonClick(evt);
   } else if (evt.key === `Escape` && error) {
-    removeErrorModal(evt);
+    onErrorButtonClick(evt);
   }
 };
 
@@ -40,22 +40,22 @@ const onDocumentClick = (evt) => {
   const success = main.querySelector(`.success`);
   const error = main.querySelector(`.error`);
   if (evt.target === success) {
-    removeSuccessModal(evt);
+    onSuccessButtonClick(evt);
   } else if (evt.target === error) {
-    removeErrorModal(evt);
+    onErrorButtonClick(evt);
   }
 };
 
 const addListenersOnSuccess = () => {
   const successButton = main.querySelector(`.success__button`);
-  successButton.addEventListener(`click`, removeSuccessModal);
+  successButton.addEventListener(`click`, onSuccessButtonClick);
   document.addEventListener(`click`, onDocumentClick);
   document.addEventListener(`keydown`, onEscapeKeydown);
 };
 
 const addListenersOnError = () => {
   const errorButton = main.querySelector(`.error__button`);
-  errorButton.addEventListener(`click`, removeErrorModal);
+  errorButton.addEventListener(`click`, onErrorButtonClick);
   document.addEventListener(`click`, onDocumentClick);
   document.addEventListener(`keydown`, onEscapeKeydown);
 };

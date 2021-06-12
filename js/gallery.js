@@ -1,6 +1,7 @@
 'use strict';
 
 const QUANTITY_OF_RANDOM_PICTURES = 10;
+const FILTER_SWITCHING_TIME = 500;
 
 const pictures = document.querySelector(`.pictures`);
 const FilterButtonsGroup = document.querySelector(`.img-filters`);
@@ -10,6 +11,7 @@ const randomFilterButton = FilterButtonsGroup.querySelector(`#filter-random`);
 const discussedFilterButton = FilterButtonsGroup.querySelector(`#filter-discussed`);
 
 let defaultPictures;
+let lastTimeout;
 
 const addId = () => {
   for (let i = 0; i < defaultPictures.length; i++) {
@@ -18,10 +20,14 @@ const addId = () => {
   }
 };
 
+const appendPictureToFragment = (fragment, currentPicture) => {
+  const picture = window.picture.create(currentPicture);
+  fragment.appendChild(picture);
+}
+
 const appendDefaultPicturesToFragment = (fragment) => {
   for (let i = 0; i < defaultPictures.length; i++) {
-    const picture = window.picture.create(defaultPictures[i]);
-    fragment.appendChild(picture);
+    appendPictureToFragment(fragment,defaultPictures[i]);
   }
 };
 
@@ -32,8 +38,7 @@ const appendRandomPicturesToFragment = (fragment) => {
     let randomPicture = defaultPictures[randomNumber];
     if (!shownPictures.includes(randomPicture)) {
       shownPictures.push(randomPicture);
-      const picture = window.picture.create(randomPicture);
-      fragment.appendChild(picture);
+      appendPictureToFragment(fragment,randomPicture);
     }
   }
 };
@@ -42,8 +47,7 @@ const appendDiscussedPicturesToFragment = (fragment) => {
   let copiedPicture = [...defaultPictures];
   for (let i = 0; i < copiedPicture.length; i++) {
     copiedPicture.sort((o1, o2) => o2.comments.length - o1.comments.length);
-    const picture = window.picture.create(copiedPicture[i]);
-    fragment.appendChild(picture);
+    appendPictureToFragment(fragment,copiedPicture[i]);
   }
 };
 
@@ -70,17 +74,27 @@ const switchActiveButton = (button) => {
   button.classList.add(`img-filters__button--active`);
 };
 
+const debounce = (button) => {
+  if (lastTimeout) {
+    window.clearTimeout(lastTimeout);
+  }
+  lastTimeout = window.setTimeout(() => {
+    removePictures();
+    render(button);
+  }, FILTER_SWITCHING_TIME);
+};
+
 const showPictures = (button) => {
   const isButtonActive = button.classList.contains(`img-filters__button--active`);
   if (!isButtonActive) {
     switchActiveButton(button);
-    window.util.debounce(button);
+    debounce(button);
   }
 };
 
-const applyDefaultFilters = () => showPictures(defaultFilterButton);
-const applyRandomFilters = () => showPictures(randomFilterButton);
-const applyDiscussedFilters = () => showPictures(discussedFilterButton);
+const onDefaultFilterButtonClick = () => showPictures(defaultFilterButton);
+const onRandomFilterButtonClick = () => showPictures(randomFilterButton);
+const onDiscussedFilterButtonClick = () => showPictures(discussedFilterButton);
 
 const onPictureClick = (evt) => {
   const picture = evt.target.closest(`.picture`);
@@ -91,9 +105,9 @@ const onPictureClick = (evt) => {
 };
 
 const addListeners = () => {
-  defaultFilterButton.addEventListener(`click`, applyDefaultFilters);
-  randomFilterButton.addEventListener(`click`, applyRandomFilters);
-  discussedFilterButton.addEventListener(`click`, applyDiscussedFilters);
+  defaultFilterButton.addEventListener(`click`, onDefaultFilterButtonClick);
+  randomFilterButton.addEventListener(`click`, onRandomFilterButtonClick);
+  discussedFilterButton.addEventListener(`click`, onDiscussedFilterButtonClick);
   pictures.addEventListener(`click`, onPictureClick);
 };
 
@@ -109,6 +123,4 @@ const activate = (newPictures) => {
 
 window.gallery = {
   activate,
-  render,
-  removePictures,
 };

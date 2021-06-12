@@ -2,12 +2,13 @@
 
 const STATUS_CODE_OK = 200;
 const TIMEOUT_IN_MS = 10000;
-const SERVER_URL = {
+
+const ServerUrl = {
   GET: `https://21.javascript.pages.academy/kekstagram/data`,
   POST: `https://21.javascript.pages.academy/kekstagram`,
 };
 
-const onLoadRequest = (request, onLoad, onError) => {
+const onRequestLoad = (request, onLoad, onError) => {
   if (request.status === STATUS_CODE_OK) {
     onLoad(request.response);
   } else {
@@ -15,19 +16,23 @@ const onLoadRequest = (request, onLoad, onError) => {
   }
 };
 
-const onErrorRequest = (onError) => onError(`Произошла ошибка соединения`);
-const onTimeoutRequest = (onError) => onError(`Запрос не успел выполниться за ${TIMEOUT_IN_MS} мс`);
+const onRequestError = (onError) => onError(`Произошла ошибка соединения`);
+const onRequestTimeout = (onError) => onError(`Запрос не успел выполниться за ${TIMEOUT_IN_MS} мс`);
 
 const sendRequest = (onSuccess, onError, requestMethod, data) => {
   const request = new XMLHttpRequest();
   request.responseType = `json`;
   request.timeout = TIMEOUT_IN_MS;
-  request.addEventListener(`load`, () => onLoadRequest(request, onSuccess, onError));
-  request.addEventListener(`error`, () => onErrorRequest(onError));
-  request.addEventListener(`timeout`, () => onTimeoutRequest(onError));
-  const url = requestMethod === `POST` ? SERVER_URL.POST : SERVER_URL.GET;
+  request.addEventListener(`load`, () => onRequestLoad(request, onSuccess, onError));
+  request.addEventListener(`error`, () => onRequestError(onError));
+  request.addEventListener(`timeout`, () => onRequestTimeout(onError));
+  const url = requestMethod === `POST` ? ServerUrl.POST : ServerUrl.GET;
   request.open(requestMethod, url);
-  request.send(data);
+  if (data) {
+    request.send(data);
+  } else {
+    request.send();
+  }
 };
 
 const get = (onSuccess, onError) => sendRequest(onSuccess, onError, `GET`);
