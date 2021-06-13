@@ -1,7 +1,7 @@
 'use strict';
 
 const MAX_QUANTITY = 5;
-const REG_EX = /^#[\w\d]{1,19}(\s|$)/i;
+const REG_EX = /^#[\w\d]{1,19}(\s|$)/;
 
 const Message = {
   NO_ERROR: ``,
@@ -21,7 +21,7 @@ const onInputResetMessage = () => {
 };
 
 const checkUniqueHashtag = (hashtags) => {
-  let isValidity = hashtags.length === new Set(hashtags).size;
+  let isValidity = hashtags.length === new Set(hashtags.map((hashtag) => hashtag.toUpperCase())).size;
   currentErrorMessage = isValidity ? Message.NO_ERROR : Message.ERROR_IN_UNIQUE;
   return isValidity;
 };
@@ -33,22 +33,22 @@ const checkWithRegex = (hashtags) => {
   return isValidity;
 };
 
-const check = () => {
-  let isValidity;
-  let hashtags = hashtagInput.value.trim().split(` `);
-  const isEmpty = hashtagInput.value.trim() === window.constants.EMPTY_STRING;
-  if (isEmpty) {
-    isValidity = true;
-  } else if (hashtags.length > MAX_QUANTITY) {
+const checkEmptyString = () => {
+  return hashtagInput.value.trim() === window.constants.EMPTY_STRING;
+};
+
+const checkLength = (hashtags) => {
+  let isValidity = true;
+  if (hashtags.length > MAX_QUANTITY) {
     isValidity = false;
     currentErrorMessage = Message.ERROR_IN_QUANTITY;
-  } else {
-    isValidity = checkWithRegex(hashtags);
-    if (isValidity === true) {
-      isValidity = checkUniqueHashtag(hashtags);
-    }
   }
   return isValidity;
+};
+
+const check = () => {
+  let hashtags = hashtagInput.value.trim().split(` `);
+  return checkEmptyString(hashtags) || (checkLength(hashtags) && checkWithRegex(hashtags) && checkUniqueHashtag(hashtags));
 };
 
 const showErrorMessage = () => {
@@ -62,6 +62,7 @@ const addListeners = () => {
 
 window.hashtag = {
   check,
+  onInputResetMessage,
   addListeners,
   showErrorMessage,
 };

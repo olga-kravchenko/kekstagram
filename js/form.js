@@ -42,6 +42,7 @@ const hideModal = () => {
   window.filters.reset();
   window.zoom.reset();
   form.reset();
+  window.hashtag.onInputResetMessage();
 };
 
 const openModal = () => {
@@ -94,9 +95,7 @@ const addListenersToUpload = () => {
   window.hashtag.addListeners();
 };
 
-const activate = () => {
-  addListenersToUpload();
-};
+const activate = () => addListenersToUpload();
 
 window.form = {
   activate,
