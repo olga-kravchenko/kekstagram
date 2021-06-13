@@ -23,11 +23,11 @@ const addId = () => {
 const appendPictureToFragment = (fragment, currentPicture) => {
   const picture = window.picture.create(currentPicture);
   fragment.appendChild(picture);
-}
+};
 
 const appendDefaultPicturesToFragment = (fragment) => {
   for (let i = 0; i < defaultPictures.length; i++) {
-    appendPictureToFragment(fragment,defaultPictures[i]);
+    appendPictureToFragment(fragment, defaultPictures[i]);
   }
 };
 
@@ -38,16 +38,16 @@ const appendRandomPicturesToFragment = (fragment) => {
     let randomPicture = defaultPictures[randomNumber];
     if (!shownPictures.includes(randomPicture)) {
       shownPictures.push(randomPicture);
-      appendPictureToFragment(fragment,randomPicture);
+      appendPictureToFragment(fragment, randomPicture);
     }
   }
 };
 
 const appendDiscussedPicturesToFragment = (fragment) => {
-  let copiedPicture = [...defaultPictures];
-  for (let i = 0; i < copiedPicture.length; i++) {
-    copiedPicture.sort((o1, o2) => o2.comments.length - o1.comments.length);
-    appendPictureToFragment(fragment,copiedPicture[i]);
+  let copiedPictures = [...defaultPictures];
+  for (let i = 0; i < copiedPictures.length; i++) {
+    copiedPictures.sort((o1, o2) => o2.comments.length - o1.comments.length);
+    appendPictureToFragment(fragment, copiedPictures[i]);
   }
 };
 

@@ -91,9 +91,7 @@ const onEscKeydown = (evt) => {
   }
 };
 
-const onCloseButtonClick = () => {
-  closeModal();
-}
+const onCloseButtonClick = () => closeModal();
 
 const addListeners = () => {
   closeButton.addEventListener(`click`, onCloseButtonClick);
