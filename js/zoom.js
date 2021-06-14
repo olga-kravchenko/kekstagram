@@ -20,14 +20,14 @@ const applyCurrentZoom = () => {
   uploadedPicture.style.transform = `scale(${currentZoom / window.constants.ONE_HUNDRED})`;
 };
 
-const zoomIn = () => {
+const onZoomInButtonClick = () => {
   if (currentZoom < Zoom.MAX) {
     currentZoom += Zoom.STEP;
     applyCurrentZoom();
   }
 };
 
-const zoomOut = () => {
+const onZoomOutButtonClick = () => {
   if (currentZoom > Zoom.MIN) {
     currentZoom -= Zoom.STEP;
     applyCurrentZoom();
@@ -35,8 +35,8 @@ const zoomOut = () => {
 };
 
 const addListeners = () => {
-  zoomInButton.addEventListener(`click`, zoomIn);
-  zoomOutButton.addEventListener(`click`, zoomOut);
+  zoomInButton.addEventListener(`click`, onZoomInButtonClick);
+  zoomOutButton.addEventListener(`click`, onZoomOutButtonClick);
 };
 
 const reset = () => {

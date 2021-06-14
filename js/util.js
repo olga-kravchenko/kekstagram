@@ -1,16 +1,6 @@
 'use strict';
 
-let lastTimeout;
-
-const debounce = (button) => {
-  if (lastTimeout) {
-    window.clearTimeout(lastTimeout);
-  }
-  lastTimeout = window.setTimeout(() => {
-    window.gallery.removePictures();
-    window.gallery.render(button);
-  }, 500);
-};
+const ERROR_MODAL_DISPLAY_TIME = 3000;
 
 const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
@@ -23,18 +13,19 @@ const createNewElement = (tagName, className, text) => {
   return newElement;
 };
 
-const cleanContent = (cleaningPlace) => cleaningPlace.innerHTML = window.constants.EMPTY_STRING;
+const cleanContent = (cleaningPlace) => {
+  cleaningPlace.innerHTML = window.constants.EMPTY_STRING;
+};
 
 const showErrorMessage = (errorMessage) => {
   const errorModal = document.createElement(`div`);
   errorModal.classList.add(`modal-error`);
   errorModal.textContent = errorMessage;
   document.body.insertAdjacentElement(`afterbegin`, errorModal);
-  setTimeout(() => errorModal.remove(), 3000);
+  setTimeout(() => errorModal.remove(), ERROR_MODAL_DISPLAY_TIME);
 };
 
 window.util = {
-  debounce,
   getRandomNumber,
   createNewElement,
   cleanContent,

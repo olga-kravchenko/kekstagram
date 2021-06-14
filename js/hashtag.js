@@ -2,10 +2,12 @@
 
 const MAX_QUANTITY = 5;
 const REG_EX = /^#[\w\d]{1,19}(\s|$)/;
+
 const Message = {
   NO_ERROR: ``,
   ERROR_IN_HASHTAG: `Хэштег начинается с # и длинной не больше 19 символов`,
   ERROR_IN_QUANTITY: `Хэштегов должно быть не больше 5`,
+  ERROR_IN_UNIQUE: `Хэштеги должны быть уникальные`,
 };
 
 const form = document.querySelector(`.img-upload__form`);
@@ -13,9 +15,15 @@ const hashtagInput = form.querySelector(`.text__hashtags`);
 
 let currentErrorMessage;
 
-const resetErrorMessage = () => {
+const onInputResetMessage = () => {
   hashtagInput.setCustomValidity(Message.NO_ERROR);
   hashtagInput.reportValidity();
+};
+
+const checkUniqueHashtag = (hashtags) => {
+  let isValidity = hashtags.length === new Set(hashtags.map((hashtag) => hashtag.toUpperCase())).size;
+  currentErrorMessage = isValidity ? Message.NO_ERROR : Message.ERROR_IN_UNIQUE;
+  return isValidity;
 };
 
 const checkWithRegex = (hashtags) => {
@@ -25,18 +33,22 @@ const checkWithRegex = (hashtags) => {
   return isValidity;
 };
 
-const checkHashtag = () => {
-  let isValidity;
-  let hashtags = hashtagInput.value.trim().split(` `);
-  const isEmpty = hashtagInput.value.trim() === window.constants.EMPTY_STRING;
-  if (isEmpty) {
-    isValidity = true;
-  } else if (hashtags.length > MAX_QUANTITY) {
+const checkEmptyString = () => {
+  return hashtagInput.value.trim() === window.constants.EMPTY_STRING;
+};
+
+const checkLength = (hashtags) => {
+  let isValidity = true;
+  if (hashtags.length > MAX_QUANTITY) {
+    isValidity = false;
     currentErrorMessage = Message.ERROR_IN_QUANTITY;
-  } else {
-    isValidity = checkWithRegex(hashtags);
   }
   return isValidity;
+};
+
+const check = () => {
+  let hashtags = hashtagInput.value.trim().split(` `);
+  return checkEmptyString(hashtags) || (checkLength(hashtags) && checkWithRegex(hashtags) && checkUniqueHashtag(hashtags));
 };
 
 const showErrorMessage = () => {
@@ -45,11 +57,12 @@ const showErrorMessage = () => {
 };
 
 const addListeners = () => {
-  hashtagInput.addEventListener(`input`, resetErrorMessage);
+  hashtagInput.addEventListener(`input`, onInputResetMessage);
 };
 
 window.hashtag = {
-  checkHashtag,
+  check,
+  onInputResetMessage,
   addListeners,
   showErrorMessage,
 };

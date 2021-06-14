@@ -1480,7 +1480,11 @@ main {
   background-color: yellow;
 }
 
+.text__hashtags:valid {
+  outline: transparent;
+}
+
 .text__hashtags:invalid {
-  border: 2px solid red;
+  outline: 2px solid red;
   color: red;
 }

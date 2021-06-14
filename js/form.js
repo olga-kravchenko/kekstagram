@@ -8,6 +8,7 @@ const closeButton = modal.querySelector(`#upload-cancel`);
 const effectLevel = modal.querySelector(`.effect-level`);
 const hashTagInput = modal.querySelector(`.text__hashtags`);
 const commentInput = modal.querySelector(`.text__description`);
+const effectLevelValue = modal.querySelector(`.effect-level__value`);
 
 const onEscKeydown = (evt) => {
   const isEscape = evt.key === `Escape`;
@@ -41,6 +42,7 @@ const hideModal = () => {
   window.filters.reset();
   window.zoom.reset();
   form.reset();
+  window.hashtag.onInputResetMessage();
 };
 
 const openModal = () => {
@@ -51,6 +53,8 @@ const openModal = () => {
 const closeModal = () => {
   removeCallBacksToCloseModal();
   hideModal();
+  hashTagInput.value = window.constants.EMPTY_STRING;
+  effectLevelValue.value = window.constants.EMPTY_STRING;
 };
 
 const addCallBacksToCloseModal = () => {
@@ -73,9 +77,9 @@ const onError = () => {
   window.utilForm.showErrorModal();
 };
 
-const sendFormDataToServer = (evt) => {
+const onFormDataToServerSubmit = (evt) => {
   evt.preventDefault();
-  if (window.hashtag.checkHashtag()) {
+  if (window.hashtag.check()) {
     window.backend.post(new FormData(form), onSuccess, onError);
   } else {
     window.hashtag.showErrorMessage();
@@ -83,17 +87,15 @@ const sendFormDataToServer = (evt) => {
 };
 
 const addListenersToUpload = () => {
-  form.addEventListener(`submit`, sendFormDataToServer);
+  form.addEventListener(`submit`, onFormDataToServerSubmit);
   uploadButton.addEventListener(`change`, onUploadButtonChange);
   window.preview.addListener();
-};
-
-const activate = () => {
   window.filters.addListeners();
   window.zoom.addListeners();
   window.hashtag.addListeners();
-  addListenersToUpload();
 };
+
+const activate = () => addListenersToUpload();
 
 window.form = {
   activate,

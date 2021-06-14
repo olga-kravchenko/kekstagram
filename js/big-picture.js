@@ -8,7 +8,7 @@ const closeButton = bigPicture.querySelector(`#picture-cancel`);
 const commentCounter = bigPicture.querySelector(`.social__comment-count`);
 const commentsGroup = bigPicture.querySelector(`.social__comments`);
 const commentLoaderButton = bigPicture.querySelector(`.comments-loader`);
-const counterOfShownComments = commentCounter.querySelector(`#comments-counter`)
+const counterOfShownComments = commentCounter.querySelector(`#comments-counter`);
 
 let quantityOfCommentsShown = 0;
 let currentOpenedPicture;
@@ -30,7 +30,10 @@ const createNewComment = (comment) => {
 };
 
 const hideCommentLoader = () => commentLoaderButton.classList.add(`hidden`);
-const showCommentCounter = () => counterOfShownComments.textContent = quantityOfCommentsShown;
+
+const showCommentCounter = () => {
+  counterOfShownComments.textContent = quantityOfCommentsShown;
+};
 
 const addCommentsToParent = (comments) => {
   let startingQuantityOfComments = quantityOfCommentsShown;
@@ -54,18 +57,6 @@ const fillBigPictureByInfo = (picture) => {
 };
 
 const onCommentLoaderButtonClick = () => addCommentsToParent(currentOpenedPicture.comments);
-
-const addListeners = () => {
-  closeButton.addEventListener(`click`, closeModal);
-  document.addEventListener(`keydown`, onEscKeydown);
-  commentLoaderButton.addEventListener(`click`, onCommentLoaderButtonClick);
-};
-
-const removeListeners = () => {
-  closeButton.removeEventListener(`click`, closeModal);
-  document.removeEventListener(`keydown`, onEscKeydown);
-  commentLoaderButton.removeEventListener(`click`, onCommentLoaderButtonClick);
-};
 
 const showModal = () => {
   bigPicture.classList.remove(`hidden`);
@@ -98,6 +89,20 @@ const onEscKeydown = (evt) => {
     evt.preventDefault();
     closeModal();
   }
+};
+
+const onCloseButtonClick = () => closeModal();
+
+const addListeners = () => {
+  closeButton.addEventListener(`click`, onCloseButtonClick);
+  document.addEventListener(`keydown`, onEscKeydown);
+  commentLoaderButton.addEventListener(`click`, onCommentLoaderButtonClick);
+};
+
+const removeListeners = () => {
+  closeButton.removeEventListener(`click`, onCloseButtonClick);
+  document.removeEventListener(`keydown`, onEscKeydown);
+  commentLoaderButton.removeEventListener(`click`, onCommentLoaderButtonClick);
 };
 
 const show = (picture) => {
